@@ -1,0 +1,10 @@
+{
+  "source": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+  "commit": "09170eec67eefd46a7ae85de61b40c194020f997",
+  "licenseSha256": "738f69dfa83db5c347c678fb9d90e560877059f0de93a327c39001bff92dc014",
+  "files": {
+    "stack/scripts/design-audit.mjs": "70621fd1962486fef2214fc9574b6c2ece1cd87ee61b5b4b797abf179c6af856",
+    "stack/.claude/agents/design-review.md": "63e9d3bc54ff4720c19fde087fcc2e499b2fdc7342f3d36b1e70a6f9c0d58d0f"
+  },
+  "productsMatchLocal": true
+}

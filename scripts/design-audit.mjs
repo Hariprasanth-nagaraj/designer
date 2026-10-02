@@ -17,7 +17,8 @@
  *   - Contrast is approximate (nearest opaque background); treat as a lead, not a verdict.
  *   - Set PW_EXECUTABLE_PATH to force a specific Chromium binary if auto-detection fails.
  */
-import { chromium } from 'playwright';
+import { loadPlaywright } from '../lib/browser-runtime.mjs';
+const { chromium } = await loadPlaywright();
 import { pathToFileURL } from 'node:url';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -80,7 +81,9 @@ function inPageChecks() {
   }
 
   // 4. Focus visibility (sample of focusables)
-  const focusables = [...document.querySelectorAll('a[href],button,input,select,textarea,[tabindex]:not([tabindex="-1"])')].slice(0, 25);
+  const focusables = [...document.querySelectorAll('a[href],button,input,select,textarea,[tabindex]:not([tabindex="-1"])')]
+    .filter((el) => { const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0 && !el.disabled && !el.closest('[hidden],[inert]'); })
+    .slice(0, 25);
   let noFocus = 0;
   for (const el of focusables) {
     el.focus();

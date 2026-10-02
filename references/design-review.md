@@ -27,8 +27,8 @@ results. Never invent findings.
 Run the deterministic passes and read them **systemically**:
 
 ```bash
-node "$HOME/.design-system/scripts/design-audit.mjs" --url http://localhost:5173 --out audit
-node "$HOME/.design-system/scripts/design-drift.mjs" <projectRoot>
+node <packageRoot>/scripts/design-audit.mjs --url http://localhost:5173 --out audit
+node <packageRoot>/scripts/design-drift.mjs <projectRoot>
 ```
 
 `design-drift` prints a **systemic rollup**: 200 radius findings is *one* bad decision,
@@ -63,11 +63,11 @@ whitespace distribution, icon consistency, density, perceived craft. Then: does 
 rendered result match the design hypothesis? Name where it diverges.
 
 **Phase 4 — Accessibility (WCAG 2.1 AA).** Tab through the page with
-`browser_press_key`. Focus must be **visible** and follow a logical order, with no
+the client keyboard tool (or Playwright `page.keyboard`). Focus must be **visible** and follow a logical order, with no
 keyboard traps. Check semantic structure (one `h1`, ordered headings, landmarks),
 labels on every control, `alt` on meaningful images, text contrast (≥ 4.5:1 body,
 ≥ 3:1 large text and UI boundaries), and that `prefers-reduced-motion` is honoured
-(`browser_emulate_media`).
+(use the connected client media-emulation tool or Playwright `page.emulateMedia`; do not assume a tool name exists).
 
 **Phase 5 — Robustness.** Long strings, empty data, partial data, slow network,
 invalid input. Content degrades gracefully; it never breaks the layout.

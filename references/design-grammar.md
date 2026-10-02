@@ -211,7 +211,7 @@ A new value is a **system-level decision**. It goes into the shared system with 
 reason, or it does not go in. A local override that "works for this one component" is how
 page 8 stops looking like page 1.
 
-Enforce it: `node "$HOME/.design-system/scripts/design-drift.mjs" <projectRoot>`
+Enforce it: `node <packageRoot>/scripts/design-drift.mjs <projectRoot>`
 
 ---
 

@@ -1,6 +1,6 @@
 {
-  "name": "@hari-prasanth-nagaraj/designer",
-  "version": "1.1.0",
+  "name": "@hariprasanth-nagaraj/designer",
+  "version": "1.2.0",
   "description": "An evidence-driven product-UI design workflow for coding agents: tier router, Design Director, coupled design grammar, contextual reference selection, static drift checking, browser review and user-flow testing. Not an application, framework or component library.",
   "license": "MIT",
   "type": "module",
@@ -36,40 +36,42 @@
     "licenses/",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
-    "README.md"
+    "README.md",
+    "SECURITY.md",
+    "dependencies.lock.json"
   ],
   "bin": {
-    "designer-doctor": "./scripts/doctor.mjs",
-    "designer-setup": "./scripts/setup.mjs",
-    "designer-install-agent": "./scripts/install-agent.mjs",
-    "designer-uninstall-agent": "./scripts/uninstall-agent.mjs",
-    "designer-pick-references": "./scripts/pick-references.mjs",
-    "designer-record": "./scripts/record.mjs",
-    "designer-design-drift": "./scripts/design-drift.mjs",
-    "designer-design-audit": "./scripts/design-audit.mjs",
-    "designer-benchmark": "./benchmarks/run-benchmark.mjs"
+    "designer-doctor": "scripts/doctor.mjs",
+    "designer-setup": "scripts/setup.mjs",
+    "designer-install-agent": "scripts/install-agent.mjs",
+    "designer-uninstall-agent": "scripts/uninstall-agent.mjs",
+    "designer-pick-references": "scripts/pick-references.mjs",
+    "designer-record": "scripts/record.mjs",
+    "designer-design-drift": "scripts/design-drift.mjs",
+    "designer-design-audit": "scripts/design-audit.mjs",
+    "designer-benchmark": "benchmarks/run-benchmark.mjs",
+    "designer-knowledge": "scripts/knowledge.mjs"
   },
   "pi": {
     "skills": [
-      "."
+      "SKILL.md"
     ]
   },
   "scripts": {
     "setup": "node scripts/setup.mjs",
     "doctor": "node scripts/doctor.mjs",
     "build-index": "node scripts/build-reference-index.mjs",
-    "test": "node tests/run-tests.mjs"
+    "test": "node tests/run-tests.mjs && node tests/parity-tests.mjs",
+    "build-manifest": "node scripts/build-manifest.mjs"
   },
-  "dependencies": {},
   "devDependencies": {
     "playwright": "1.63.0"
   },
-  "optionalDependencies": {},
   "publishConfig": {
     "access": "public",
     "provenance": false
   },
-  "enginesNote": "Core tools need zero dependencies. Browser features need Playwright, installed separately: npx playwright install chromium",
+  "enginesNote": "Core tools have zero runtime dependencies. designer-setup --profile browser --apply installs pinned Playwright/Chromium into user-owned state.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Hariprasanth-nagaraj/designer.git"

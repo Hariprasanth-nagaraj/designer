@@ -1,195 +1,104 @@
 #!/usr/bin/env node
-/**
- * setup.mjs — profile-based environment setup.
- *
- * Safe by default: prints what it would do, changes nothing unless you pass
- * --apply. Never installs privileged system packages, never runs npx install
- * without telling you, never overwrites your MCP config.
- *
- * Profiles:
- *   core     no browser. Static checks, reference selection, evals, reasoning.
- *   browser  core + Playwright library + Chromium binary. Enables audit + flow tests.
- *   full     browser + optional knowledge packs (external, opt-in per pack).
- *
- * Usage:
- *   node scripts/setup.mjs --profile browser            # dry run, prints the plan
- *   node scripts/setup.mjs --profile browser --apply
- *   node scripts/setup.mjs --profile full --apply --packs ui-ux-pro-max,baoyu-design
- *   node scripts/setup.mjs --check-reuse                # report compatible existing tooling
- */
-import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
-import { join } from "node:path";
-import { homedir, tmpdir } from "node:os";
-import { spawnSync } from "node:child_process";
-import { paths, stateRoot, findPack, displayPath } from "../lib/paths.mjs";
-
-const argv = process.argv.slice(2);
-const flag = (n, d = null) => { const i = argv.indexOf(`--${n}`); return i > -1 && !argv[i + 1]?.startsWith("--") ? argv[i + 1] : d; };
-const has = (n) => argv.includes(n);
-
-const APPLY = has("--apply");
-const PROFILE = flag("profile", "core");
-const PACKS = (flag("packs", "") ?? "").split(",").map((s) => s.trim()).filter(Boolean);
-
-if (!["core", "browser", "full"].includes(PROFILE)) {
-  console.error(`unknown profile "${PROFILE}" — expected core | browser | full`);
-  process.exit(2);
-}
-if (PACKS.some((p) => !["ui-ux-pro-max", "baoyu-design"].includes(p))) {
-  console.error("unknown pack. Available external packs: ui-ux-pro-max, baoyu-design");
-  process.exit(2);
-}
-if (PROFILE === "full" && PACKS.length === 0) {
-  console.log("Note: profile 'full' adds no packs by default.");
-  console.log("      Pass --packs ui-ux-pro-max,baoyu-design to opt in explicitly.");
-  console.log("      These are EXTERNAL skills with no redistributable licence found, so this");
-  console.log("      package does not bundle them. Installing is your choice and your step.\n");
-}
-
-const steps = [];
-const step = (name, why, fn) => steps.push({ name, why, fn });
-
-// ---------------------------------------------------------------- reuse detection
-function detectExisting() {
-  const found = [];
-  // A globally/locally available playwright the scripts can use already.
-  try {
-    const r = spawnSync(process.execPath, ["-e", "console.log(require.resolve('playwright'))"], { encoding: "utf8", timeout: 20000 });
-    if (r.status === 0 && r.stdout.trim()) found.push({ what: "playwright", where: r.stdout.trim().trim(), kind: "resolvable module" });
-  } catch {}
-  const localPw = join(paths.packageRoot, "node_modules", "playwright");
-  if (existsSync(localPw)) found.push({ what: "playwright", where: localPw, kind: "package-local" });
-  for (const pack of ["ui-ux-pro-max", "baoyu-design"]) {
-    const at = findPack(pack);
-    if (at) found.push({ what: pack, where: at, kind: "external pack" });
+/** Plan-only default. Browser dependencies live in personal state, not in package/agent copies. */
+import {mkdirSync,readFileSync,writeFileSync,renameSync,rmSync,mkdtempSync,existsSync} from "node:fs";
+import {join,dirname} from "node:path";
+import {spawnSync} from "node:child_process";
+import {paths,findPack,displayPath} from "../lib/paths.mjs";
+import {PLAYWRIGHT_VERSION,runtimeRoot,resolvePlaywright,probeBrowser} from "../lib/browser-runtime.mjs";
+const argv=process.argv.slice(2), has=k=>argv.includes("--"+k);
+const flag=(k,d=null)=>{const i=argv.indexOf("--"+k);return i>=0&&argv[i+1]&&!argv[i+1].startsWith("--")?argv[i+1]:d;};
+const APPLY=has("apply"), profile=flag("profile","core");
+const packRegistry=JSON.parse(readFileSync(join(paths.data,"optional-packs.json"),"utf8")).packs;
+const packs=(flag("packs",profile==="full"?"ui-ux-pro-max,baoyu-design":"")||"").split(",").filter(Boolean);
+function command(exe,args,options={}) {
+  // On Windows invoke npm's JS entry, avoiding shell interpolation of state paths.
+  if(exe==="npm" && process.platform==="win32") {
+    const candidates=[process.env.npm_execpath,join(dirname(process.execPath),"node_modules","npm","bin","npm-cli.js")].filter(Boolean);
+    const cli=candidates.find(existsSync);
+    if(!cli) {
+      const where=spawnSync("where.exe",["npm.cmd"],{encoding:"utf8"});
+      for(const p of (where.stdout??"").trim().split(/\r?\n/)) {
+        const candidate=join(dirname(p),"node_modules","npm","bin","npm-cli.js");
+        if(existsSync(candidate)) return command(process.execPath,[candidate,...args],options);
+      }
+      throw new Error("npm CLI could not be resolved; install Node/npm first");
+    }
+    return command(process.execPath,[cli,...args],options);
   }
-  return found;
+  const r=spawnSync(exe,args,{encoding:"utf8",timeout:900000,...options});
+  if(r.status!==0) throw new Error((r.stderr||r.stdout||r.error?.message||"command failed").trim().slice(-1500));
+  return r;
 }
-
-if (has("--check-reuse")) {
-  const found = detectExisting();
-  console.log("\nExisting compatible tooling detected\n");
-  if (!found.length) console.log("  (none found — a clean install is required)");
-  for (const f of found) console.log(`  + ${f.what.padEnd(16)} ${f.kind.padEnd(18)} ${displayPath(f.where)}`);
-  console.log("\nReusing existing tooling is safe. Setup will not touch anything it did not install.\n");
-  process.exit(0);
-}
-
-// ---------------------------------------------------------------- steps
-step("verify Node runtime",
-  "Node 20+ is required by every script in this package.",
-  () => {
-    const major = Number(process.versions.node.split(".")[0]);
-    return { ok: major >= 20, detail: `Node ${process.versions.node}` };
-  });
-
-step("build the reference index",
-  "Layer B retrieval needs an index built from the bundled data. Rebuilding is deterministic.",
-  () => {
-    const r = spawnSync(process.execPath, [join(paths.scripts, "build-reference-index.mjs")], { encoding: "utf8", timeout: 120000 });
-    return { ok: r.status === 0, detail: (r.stdout ?? r.stderr ?? "").trim().split("\n").slice(-2).join(" ") };
-  });
-
-step("create the personal state directory",
-  "Eval records and install receipts live OUTSIDE the checkout so updating or deleting the repo never destroys your design history.",
-  () => {
-    if (APPLY) { mkdirSync(paths.evals, { recursive: true }); mkdirSync(paths.receipts, { recursive: true }); }
-    return { ok: true, detail: displayPath(stateRoot()) };
-  });
-
-step("run drift self-test",
-  "Proves the checker passes a clean fixture AND still rejects a known-bad one. A checker that cannot fail is worse than none.",
-  () => {
-    const clean = spawnSync(process.execPath, [join(paths.scripts, "design-drift.mjs"), join(paths.packageRoot, "tests", "fixtures", "drift-ok")], { encoding: "utf8", timeout: 60000 });
-    const bad = spawnSync(process.execPath, [join(paths.scripts, "design-drift.mjs"), join(paths.packageRoot, "tests", "fixtures", "drift-bad")], { encoding: "utf8", timeout: 60000 });
-    return {
-      ok: clean.status === 0 && bad.status !== 0,
-      detail: clean.status === 0 && bad.status !== 0 ? "clean fixture passes, negative control rejected" : `PROBLEM clean=${clean.status} bad=${bad.status}`,
-    };
-  });
-
-if (PROFILE !== "core") {
-  step("install Playwright (Node library)",
-    "Required for the deterministic browser audit and scripted flow tests. Pinned by package-lock.json.",
-    () => {
-      if (!APPLY) return { ok: true, skipped: true, detail: `would run: npm ci` };
-      const r = spawnSync("npm", ["ci"], { cwd: paths.packageRoot, encoding: "utf8", timeout: 600000, shell: process.platform === "win32" });
-      return { ok: r.status === 0, detail: r.status === 0 ? "installed" : (r.stderr ?? "").trim().split("\n").slice(0, 3).join(" ") };
-    });
-
-  step("download the Chromium binary",
-    "Playwright needs its own browser build. ~150 MB. Some Linux systems also need system libraries (see docs/installation.md).",
-    () => {
-      if (!existsSync(join(paths.packageRoot, "node_modules", "playwright"))) return { ok: false, skipped: true, detail: "deferred: Playwright library not installed yet" };
-      if (!APPLY) return { ok: true, skipped: true, detail: "would run: npx playwright install chromium" };
-      const r = spawnSync("npx", ["playwright", "install", "chromium"], { cwd: paths.packageRoot, encoding: "utf8", timeout: 900000, shell: process.platform === "win32" });
-      return { ok: r.status === 0, detail: r.status === 0 ? "chromium ready" : (r.stderr ?? "").trim().split("\n").slice(0, 3).join(" ") };
-    });
-
-  step("launch-test the browser",
-    "A green install is not a working browser. This actually launches and screenshots.",
-    () => {
-      if (!existsSync(join(paths.packageRoot, "node_modules", "playwright"))) return { ok: false, skipped: true, detail: "deferred: Playwright not installed" };
-      const pw = join(paths.packageRoot, "node_modules", "playwright");
-      // Bare specifier + cwd = package root, matching how design-audit.mjs resolves.
-      const code = `const { chromium } = await import("playwright");
-const b = await chromium.launch(); const p = await b.newPage();
-await p.setContent('<h1>ok</h1>'); const s = await p.screenshot();
-console.log(s.length); await b.close();`;
-      const r = spawnSync(process.execPath, ["--input-type=module", "-e", code], { encoding: "utf8", timeout: 180000, cwd: paths.packageRoot });
-      const all = ((r.stderr ?? "") + (r.stdout ?? "")).trim().split("\n").filter((l) => l && !/^\s*at /.test(l));
-      const hint = /Executable doesn't exist/i.test(all.join(" "))
-        ? "chromium missing — run: npx playwright install chromium"
-        : (all[0] ?? `exit ${r.status}`).slice(0, 160);
-      return { ok: r.status === 0, detail: r.status === 0 ? "browser launched and captured" : hint };
-    });
-}
-
-if (PACKS.length) {
-  for (const pack of PACKS) {
-    step(`external pack: ${pack}`,
-      "EXTERNAL skill, not bundled — no redistributable licence was found for the installed copy. Point this package at your own install rather than redistributing it.",
-      () => {
-        const at = findPack(pack);
-        return { ok: !!at, detail: at ? `using ${displayPath(at)}` : `not found. Install it yourself, or set the override env var, then re-run setup.` };
-      });
+try {
+  if(!["core","browser","full"].includes(profile)) throw new Error("Profile must be core, browser or full");
+  if(packs.some(p=>!["ui-ux-pro-max","baoyu-design"].includes(p))) throw new Error("Unknown optional pack");
+  const runtime=resolvePlaywright();
+  if(APPLY && process.env.DESIGNER_PLAYWRIGHT && !runtime) throw new Error("Explicit DESIGNER_PLAYWRIGHT is invalid; correct it before setup");
+  for(const name of packs) {
+    const override=name==="ui-ux-pro-max"?process.env.DESIGNER_UIPM:process.env.DESIGNER_BAOYU;
+    if(APPLY && override && !findPack(name)) throw new Error("Explicit optional pack override is invalid: "+name);
   }
-}
-
-// ---------------------------------------------------------------- run
-console.log(`\nSETUP — profile: ${PROFILE}${APPLY ? "  (APPLYING)" : "  (DRY RUN — nothing will change)"}\n`);
-console.log(`package : ${displayPath(paths.packageRoot)}`);
-console.log(`state   : ${displayPath(stateRoot())}\n`);
-
-const existing = detectExisting();
-if (existing.length) {
-  console.log("Existing tooling found (setup will not modify it):");
-  for (const f of existing) console.log(`  + ${f.what} — ${displayPath(f.where)}`);
-  console.log();
-}
-
-let failed = 0;
-let applied = 0;
-for (const s of steps) {
-  const label = APPLY ? (s.why) : `(dry run) ${s.why}`;
-  let res;
-  try { res = s.fn(); } catch (e) { res = { ok: false, detail: e.message }; }
-  const icon = res.skipped ? "•" : res.ok ? "✓" : "✗";
-  if (!res.skipped) { if (res.ok) applied++; else failed++; }
-  console.log(`  ${icon} ${s.name}`);
-  console.log(`      ${label}`);
-  console.log(`      → ${res.detail}`);
-}
-console.log(`\n${"-".repeat(60)}`);
-if (!APPLY) {
-  console.log("Dry run complete. Re-run with --apply to perform these steps.");
-} else if (failed) {
-  console.log(`${applied} step(s) succeeded, ${failed} FAILED. Fix the failures above, then run:`);
-  console.log("  node scripts/doctor.mjs --profile " + PROFILE);
-  process.exitCode = 1;
-} else {
-  console.log("Setup complete. Next:");
-  console.log(`  node scripts/install-agent.mjs --agent <pi|codex|claude-code> --scope user`);
-  console.log(`  node scripts/doctor.mjs --profile ${PROFILE}`);
-}
-console.log();
+  if(has("check-reuse")) {
+    console.log("Playwright: "+(runtime?displayPath(runtime.dir):"not available"));
+    for(const p of ["ui-ux-pro-max","baoyu-design"]) console.log(p+": "+(findPack(p)??"absent; optional"));
+    process.exit(0);
+  }
+  console.log("Designer setup — "+profile+" — "+(APPLY?"APPLY":"DRY RUN; no writes or downloads"));
+  console.log("State: "+displayPath(paths.stateRoot));
+  console.log("Core: verify runtime/index and negative-control fixtures");
+  if(profile!=="core") console.log(runtime?"Reuse pinned Playwright at "+runtime.dir:
+    "Install playwright@"+PLAYWRIGHT_VERSION+" in "+runtimeRoot+"; then download Chromium and launch-test it");
+  for(const p of packs) console.log(p+": "+(findPack(p)??"would fetch pinned licensed upstream repository into personal state"));
+  if(!APPLY) {console.log("Re-run with --apply to execute. No package files changed.");process.exit(0);}
+  if(Number(process.versions.node.split(".")[0])<20) throw new Error("Node 20+ required");
+  if(!existsSync(paths.referenceIndex)) command(process.execPath,[join(paths.scripts,"build-reference-index.mjs")]);
+  mkdirSync(paths.evals,{recursive:true});mkdirSync(paths.receipts,{recursive:true});
+  const clean=spawnSync(process.execPath,[join(paths.scripts,"design-drift.mjs"),join(paths.packageRoot,"tests","fixtures","drift-ok")],{encoding:"utf8"});
+  const bad=spawnSync(process.execPath,[join(paths.scripts,"design-drift.mjs"),join(paths.packageRoot,"tests","fixtures","drift-bad")],{encoding:"utf8"});
+  if(clean.status!==0||bad.status!==1||!bad.stdout.includes("radius-drift")) throw new Error("Drift self-test failed");
+  if(profile!=="core") {
+    if(!runtime) {
+      mkdirSync(dirname(runtimeRoot),{recursive:true});
+      const lock=runtimeRoot+".lock";
+      try {mkdirSync(lock);} catch {throw new Error("Browser setup already running (or stale lock): "+lock);}
+      const stage=mkdtempSync(join(dirname(runtimeRoot),".playwright-stage-"));
+      let backedUp=false;
+      const backup=join(stage,"previous");
+      try {
+        writeFileSync(join(stage,"package.json"),JSON.stringify({name:"designer-browser-runtime",private:true,version:"1.0.0"}));
+        command("npm",["install","--prefix",stage,"--ignore-scripts","--no-audit","--no-fund","--save-exact","playwright@"+PLAYWRIGHT_VERSION]);
+        // Check the install before swapping into the shared runtime.
+        if(!existsSync(join(stage,"node_modules","playwright","cli.js"))) throw new Error("Incomplete Playwright install");
+        const payload=join(stage,"runtime");mkdirSync(payload);
+        for(const p of ["node_modules","package.json","package-lock.json"]) renameSync(join(stage,p),join(payload,p));
+        if(existsSync(runtimeRoot)) {renameSync(runtimeRoot,backup);backedUp=true;}
+        renameSync(payload,runtimeRoot);
+      } catch(e) {
+        if(backedUp&&!existsSync(runtimeRoot)) {renameSync(backup,runtimeRoot);backedUp=false;}
+        throw e;
+      } finally {rmSync(stage,{recursive:true,force:true});rmSync(lock,{recursive:true,force:true});}
+    }
+    const found=resolvePlaywright();
+    if(!found) throw new Error("Pinned library still unavailable; check DESIGNER_PLAYWRIGHT override");
+    const browserEnv={...process.env};
+    if(found.managed&&!browserEnv.PLAYWRIGHT_BROWSERS_PATH) browserEnv.PLAYWRIGHT_BROWSERS_PATH=join(runtimeRoot,"browsers");
+    command(process.execPath,[join(found.dir,"cli.js"),"install","chromium"],{env:browserEnv});
+    const probe=await probeBrowser();console.log("Browser launched and screenshot captured: "+probe.bytes+" bytes");
+  }
+  for(const name of packs) {
+    if(findPack(name)) {console.log("Reuse optional pack: "+findPack(name));continue;}
+    const spec=packRegistry[name], target=join(paths.stateRoot,"packs",name);
+    if(existsSync(target)) throw new Error("Incomplete/foreign optional pack retained: "+target);
+    mkdirSync(dirname(target),{recursive:true});
+    const stage=mkdtempSync(join(dirname(target),".pack-stage-"));
+    try {
+      command("git",["init",stage]);command("git",["-C",stage,"remote","add","origin",spec.repository]);
+      command("git",["-C",stage,"fetch","--depth","1","origin",spec.commit]);
+      command("git",["-C",stage,"checkout","--detach","FETCH_HEAD"]);
+      if(!existsSync(join(stage,spec.licensePath)) || !readFileSync(join(stage,spec.licensePath),"utf8").includes("MIT License")) throw new Error("Pinned upstream licence unavailable: "+name);
+      if(!existsSync(join(stage,spec.skillPath,"SKILL.md"))) throw new Error("Pinned skill missing: "+name);
+      renameSync(stage,target);console.log("Installed optional upstream "+name+" at "+spec.commit);
+    } finally {if(existsSync(stage)) rmSync(stage,{recursive:true,force:true});}
+  }
+  console.log("Setup complete for "+profile+". Use designer-install-agent --ai <id> --apply; doctor reports client/MCP verification separately.");
+} catch(e) {console.error(e.message);process.exitCode=1;}

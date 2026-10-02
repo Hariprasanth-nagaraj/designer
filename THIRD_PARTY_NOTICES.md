@@ -1,65 +1,46 @@
-# Third-Party Notices
+# Third-party notices
 
-This package redistributes material from the projects below. Each retains its own
-licence. Full licence texts are in `licenses/upstream/`.
+Authored code is MIT. Each bundled upstream retains its own license; full texts are in licenses/upstream/.
 
-## Bundled material
-
-| Component | Where it lives here | Source | Licence | Modifications |
-|---|---|---|---|---|
-| 74 brand `DESIGN.md` design systems | `data/brand-systems/` | https://github.com/VoltAgent/awesome-design-md | MIT © 2026 VoltAgent | none (`.git` stripped) |
-| 67 style archetypes | `data/style-archetypes/` | https://github.com/bergside/awesome-design-skills | MIT © 2026 Bergside | none (marketing preview images intentionally not vendored) |
-| UX pipeline skills (7) | `data/ux-pipeline-skills/` | https://github.com/richhemsley3/claude-design-skills | MIT © 2026 Rich Hemsley | none; selected subset only |
-| `frontend-design` guidance | `data/frontend-design.md` | https://github.com/anthropics/skills/tree/main/skills/frontend-design | Apache-2.0 | none |
-
-### Apache-2.0 attribution — `data/frontend-design.md`
-
-Licensed under the Apache License, Version 2.0. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by
-applicable law or agreed to in writing, software distributed under the License
-is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, either express or implied. See `licenses/upstream/frontend-design/LICENSE.txt`
-for the full text. This NOTICE file satisfies the Apache-2.0 §4(d) obligation
-to retain attribution notices.
-
-## Authored from an upstream source
-
-| File | Origin | Upstream | Licence | Adaptation |
-|---|---|---|---|---|
-| `scripts/design-audit.mjs` | multi-viewport heuristic audit | `ui-ux-pro-max` `stack/` subtree (https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), MIT | MIT | Copied verbatim from the local vendored copy. Only the `playwright` resolution differs (resolved from the package install). The snapshot's `package.json` declares `"license": "MIT"`; **no LICENSE file was present in that snapshot** — see docs/PROVENANCE.md § Licence verification. |
-| `references/design-review.md` | 7-phase two-critic browser review | same `ui-ux-pro-max` `stack/` subtree, MIT | MIT | **Ported, not copied.** MCP tool names made client-neutral; Claude-Code-specific model/subagent invocation removed. |
-
-## NOT bundled — deliberately excluded
-
-These are dependencies of the workflow but were **excluded because no
-redistributable licence was found** in the installed copies on the machine this
-package was assembled on. Bundling them without permission would be a licence
-violation, so they are declared as optional external packs instead:
-
-| Capability | Dependency | Reason excluded |
-|---|---|---|
-| Product-type intelligence (Layer A) | `ui-ux-pro-max` | No LICENSE file in the installed copy; SKILL.md states no licence |
-| Craft methodology / design-system authoring | `baoyu-design` | No LICENSE file in the installed copy; no licence or copyright notice anywhere in it |
-| Accessibility review checklist | `accessibility` (skill) | No LICENSE file |
-| Visual craft / anti-slop rules | `craft` (skill) | No LICENSE file |
-| Design measurement | `design-analysis` (skill) | No LICENSE file |
-
-**Consequence:** the core workflow is fully functional without them. Layer A
-reference selection reports itself unavailable rather than guessing. See
-`docs/dependencies.md` for how to install them yourself if you want the
-enrichment.
-
-If you are the author of any of the above and intend them to be redistributable,
-add the licence file to your repository and this package can bundle them in a
-later version.
-
-## Optional MCP servers (installed by the user, not bundled)
-
-| Server | Package | Licence | Configured in |
+| Material | Source | License | Changes |
 |---|---|---|---|
-| Playwright MCP | `@playwright/mcp` | Apache-2.0 | the user's own agent MCP config |
-| Chrome DevTools MCP | `chrome-devtools-mcp` | Apache-2.0 | the user's own agent MCP config |
-| shadcn MCP | `shadcn` | MIT | the user's own agent MCP config |
+| 74 brand systems, data/brand-systems | https://github.com/VoltAgent/awesome-design-md | MIT | Selected reference documents; no brand asset rights implied. |
+| 67 archetypes, data/style-archetypes | https://github.com/bergside/awesome-design-skills | MIT | Preview images excluded. |
+| 7 selected UX reference stages, data/ux-pipeline-skills | https://github.com/richhemsley3/claude-design-skills | MIT | Selected subset, not its full orchestration dependency tree. |
+| data/frontend-design.md | https://github.com/anthropics/skills/tree/main/skills/frontend-design | Apache-2.0 | Aesthetic influence, loaded selectively. Terms: licenses/upstream/frontend-design/LICENSE.txt. |
+| scripts/design-audit.mjs, references/design-review.md, 192 product types in data/product-intelligence | https://github.com/nextlevelbuilder/ui-ux-pro-max-skill | MIT © 2024 Next Level Builder | Pinned commit 09170eec67eefd46a7ae85de61b40c194020f997. Audit runtime resolver adapted; review tool/model/path instructions adapted. |
 
-This package writes **recommended** MCP entries into your agent config only with
-explicit consent, and never replaces an existing file wholesale.
+## Verified stack provenance
+
+licenses/upstream/uipm-stack/LICENSE retains the actual upstream MIT text.
+SOURCE.json records the pinned commit and SHA-256 of the original audit/review files.
+Those files were compared with the original local snapshots and matched exactly
+before our portability adaptations. Product rows likewise match after LF normalization.
+This resolves the earlier snapshot-only license uncertainty; a package.json license
+field is no longer the sole evidence.
+
+## Apache-2.0 attribution
+
+Licensed under the Apache License, Version 2.0. You may obtain a copy at
+https://www.apache.org/licenses/LICENSE-2.0. Distributed on an AS IS basis,
+without warranties or conditions of any kind. Original frontend-design attribution
+and license text are retained; this notice preserves attribution under §4(d).
+
+## Optional enrichment, not bundled
+
+The complete ui-ux-pro-max and baoyu-design repositories are optional, pinned
+external installations. Their canonical repositories contain MIT licenses;
+setup --profile full --apply fetches those repositories into user-owned state and
+retains their notices. Reusing an existing private/local copy does not imply its
+custom additions have the upstream license.
+
+Other private skills (craft, accessibility, design-analysis) are not redistributed:
+their local copies were not independently license-cleared. The portable Director,
+grammar, review, licensed intelligence and browser checks remain available without them.
+
+## Optional processes
+
+Playwright (Apache-2.0) is installed only by explicit browser setup or provided
+through a matching module override. Playwright MCP, Chrome DevTools MCP and shadcn
+MCP are client-owned optional processes. Designer never writes or replaces an
+agent/MCP configuration.

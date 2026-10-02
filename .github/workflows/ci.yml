@@ -22,7 +22,7 @@ jobs:
       # The core must run with ZERO installed packages. If this needs an install
       # to pass, the core has stopped being portable.
       - name: core tests (no install)
-        run: node tests/run-tests.mjs
+        run: npm test
 
       - name: install dependencies
         run: npm ci
@@ -35,6 +35,15 @@ jobs:
 
       - name: doctor (browser — proves a real browser launches)
         run: node scripts/doctor.mjs --profile browser
+
+      - name: packed archive and copied-skill browser/flow checks
+        run: node tests/distribution-tests.mjs --out distribution-evidence
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: distribution-${{ matrix.os }}
+          path: distribution-evidence/
 
   determinism:
     name: reference index is deterministic
@@ -52,3 +61,4 @@ jobs:
           cp data/reference-index.json /tmp/first.json
           node scripts/build-reference-index.mjs
           diff /tmp/first.json data/reference-index.json && echo "deterministic ✓"
+          node scripts/build-manifest.mjs --check

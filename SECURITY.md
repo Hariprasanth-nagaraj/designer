@@ -1,52 +1,37 @@
-# Security
+# Security and lifecycle guarantees
 
-## What this package runs on your machine
+Review any third-party instruction or executable before running it.
 
-This package ships Node scripts and Markdown instructions. Read them before running —
-that is the same advice pi gives for any third-party package.
+| Tool | Reads / writes |
+|---|---|
+| setup | Dry-run reads only. --apply creates personal state; installs pinned Playwright/Chromium there; full profile optionally fetches pinned upstream git repositories. May build a missing package reference index, never rebuilds an existing one implicitly. |
+| doctor | Source inspection, sandboxed core probes; browser profile launches Chromium and captures an in-memory screenshot. It never claims client/MCP discovery from directories. |
+| install-agent | Dry-run reads only. --apply stages a complete copy/link, refuses foreign/edited destinations, swaps with rollback, and writes destination-keyed receipts. No agent config edits. |
+| uninstall-agent | Only receipt-owned unchanged copies/expected links; edited destinations and their receipts retained. Personal evals require explicit --purge-state; runtime and other receipts are not purged. |
+| record | Approve/reject writes external personal state without collisions. import --from previews; --apply copies records with source hashes, never deletes legacy records. |
+| drift | Read-only, except explicit --init creating project config. |
+| audit | Opens a supplied HTTP URL, exercises focus/scroll, writes requested screenshots/report; not a security scanner or certification. |
+| reference selector / knowledge | Read-only. Explicit build-index/build-manifest commands write generated package files. |
 
-| Script | What it does | Writes to |
-|---|---|---|
-| `setup.mjs` | checks runtime, builds an index, creates the state dir, optionally `npm ci` + `npx playwright install` | package checkout (`data/reference-index.json`), state dir, browser cache |
-| `doctor.mjs` | runs probes in a temp sandbox | temp only (cleaned on exit) |
-| `install-agent.mjs` | registers the skill with an agent | your agent's user skill directory; `state/receipts/` |
-| `uninstall-agent.mjs` | removes a registration it created | removes only what it installed and only if unchanged |
-| `design-drift.mjs` | static source analysis | **nothing** — read-only over your project |
-| `design-audit.mjs` | launches a browser against a URL **you** supply | `audit/` output dir you name |
-| `pick-references.mjs` / `build-reference-index.mjs` | retrieval / indexing | `data/reference-index.json` |
-| `record.mjs` | writes personal eval records | state dir (outside the checkout) |
+Network use is explicit: browser setup downloads npm packages/browser binaries;
+optional pack setup fetches pinned git repositories; an audit loads the URL you supply.
+No sudo, privileged system packages, global npm installs, model credentials, token
+storage, or agent/MCP configuration replacement.
 
-## Principles this package tries to hold
+Browser scripts use one pinned resolver: explicit DESIGNER_PLAYWRIGHT, managed
+state runtime, then matching package-local dev runtime. A bad explicit override is
+not silently bypassed. Local state includes installation receipts, optional packs,
+runtime lockfiles and evals. Keep it private and backed up.
 
-1. **Dry run by default.** Setup and install print their plan and change nothing
-   without `--apply`.
-2. **No silent clobbering.** `install-agent.mjs` refuses to overwrite a directory it
-   did not create, and exits non-zero instead.
-3. **No privileged installs.** The package never runs `sudo`, never installs system
-   packages, and never installs a global npm package.
-4. **No network calls you did not ask for.** The only network use is `npm ci`,
-   `npx playwright install`, and MCP servers you add yourself.
-5. **Read-only over your project.** `design-drift.mjs` never writes to the project it
-   analyses. `--init` writes `design-drift.config.json` into the project — that is the
-   one intentional write, and it is explicit.
-6. **Your data stays out of Git.** Eval records live outside the checkout and are
-   git-ignored even if misconfigured.
+Install transactions retain the prior destination until the replacement validates.
+Ordinary failures roll back. An abrupt process/OS termination can leave a sibling
+.designer-stage-* recovery directory; inspect its backup before manually removing
+it. Do not run concurrent installs for the same destination.
 
-## Third-party executable content
+Bundled data is reference material, not executable library code. It may instruct an
+agent to run tools or alter project files: treat it as trusted input only after review.
+Optional full repositories are upstream executable/instruction content under their own
+terms; their installation is not independent security certification.
 
-The bundled material under `data/` is **reference Markdown** — design documents from
-MIT/Apache-2.0 projects. It is read as text by a human or an agent; it is never
-executed. `data/ux-pipeline-skills/` contains agent-skill text from a third party and
-should be read before relying on it, in the same way you would read any third-party
-prompt you install.
-
-## MCP servers
-
-MCP servers are **not bundled**. They are third-party processes with network access,
-installed by you under your own account. Add them only if you want them, and review
-what each grants.
-
-## Reporting a vulnerability
-
-Open a private security advisory on the repository rather than a public issue.
-Do not include exploit payloads against other people's projects.
+Report vulnerabilities privately through the GitHub repository security advisory
+feature; never include credentials or recovery codes.

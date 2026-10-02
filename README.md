@@ -1,250 +1,106 @@
 # Designer
 
-**Stop designing by vibes. Check it instead.**
+An evidence-driven product-UI workflow for coding agents—not an application or component framework.
 
-Two things in one package:
+**Product context → UX reasoning → references → one Design Director hypothesis → coupled grammar → component reuse → implementation → live review → flow tests → systemic fixes → personal evals.**
 
-1. **A skill** — instructions that teach an AI agent how to make design decisions.
-2. **Tools** — plain CLI programs that check those decisions stayed consistent.
+## Install tools, then select your agent
 
-The tools work on their own. You do not need an AI agent, a build step, or an account.
+Published-release command (requires the package to be available on npm):
 
-```bash
-npm install -g @hari-prasanth-nagaraj/designer
-designer-doctor
+```sh
+npm install -g @hariprasanth-nagaraj/designer
+designer-install-agent --ai pi             # preview
+designer-install-agent --ai pi --apply     # safe, complete independent copy
 ```
 
-That is the whole core install. Node 20+ and nothing else.
+For an unreleased checkout or local tarball:
 
----
-
-## Try it in 30 seconds
-
-```bash
-cd my-app
-designer-design-drift . --init    # learn your design system from your own tokens
-designer-design-drift .           # find where your UI has drifted
+```sh
+npm install -g .
+# or npm install -g ./hariprasanth-nagaraj-designer-1.2.0.tgz
 ```
 
-```
-✗ radius-drift — 12 findings across 4 files
-  Geometry has fragmented into per-component choices. Collapse to the declared
-  radius family and map component roles onto it.
-```
+`designer-install-agent --list` lists placement conventions. No arguments previews detected configuration markers; `--ai all --apply` deliberately places files for those markers. **Neither detection nor placement proves native client compatibility.** Copy is the default. `--mode link` explicitly links to the source, falling back to a copy if links are unavailable.
 
-One rollup line, because **200 radius findings is one bad decision, not 200 bugs.**
+Project registration: `designer-install-agent --ai claude --scope project --apply`.
+Pi: reload, then `/skill:designer <brief>`. Claude Code: confirm discovery, then `/designer <brief>`.
+Any client that can read local files: `designer-install-agent --print-bridge`.
+This prints an instruction; it never edits AGENTS.md, settings or MCP config.
 
-More:
+## Runtime profiles
 
-```bash
-designer-pick-references "dental clinic scheduling"   # ranked design references
-designer-record approve --project x --why "…"         # remember decisions
-designer-design-audit --url http://localhost:3000     # audit a real page
-```
-
-Full guide: **[docs/INSTALL.md](docs/INSTALL.md)** · no agent needed.
-
----
-
-## Using it with an AI agent
-
-The tools give an agent instruments. The skill gives it judgement. Full guide:
-**[docs/INSTALL.md](docs/INSTALL.md#using-it-with-an-ai-agent)**.
-
-```bash
-designer-install-agent --agent pi --apply
+```sh
+designer-setup --profile core                # read-only preview
+designer-setup --profile browser --apply     # pinned Playwright + Chromium
+designer-doctor --profile browser
+designer-setup --profile full                # preview browser + optional upstream packs
+designer-setup --profile full --apply
 ```
 
-```text
-/skill:designer Design an approval workflow screen for finance operators.
+Browser runtime, optional pack repositories, receipts and preferences live in personal
+state outside the package. A single resolver is used by setup/audit/doctor and can be
+imported by project flow tests. No archive lockfile or writable global package directory
+is required. Full enrichment needs git/network; Python 3 is needed for ui-ux-pro-max search.
+
+Core needs Node 20+ and no installed npm dependencies. It includes **192 product-type
+priors, 74 brand systems, 67 archetypes, frontend-design taste guidance and selected UX
+stages**. Full optional methodology/search can be fetched from pinned, MIT-verified
+upstreams; no author's private skill collection is required.
+
+Doctor distinguishes executable core, actual browser launch, entry-file placement,
+native client discovery and MCP connectivity. A full-profile PARTIAL is not a green
+readiness claim; confirm client/tool operation separately.
+
+## Tools without an AI agent
+
+```sh
+designer-design-drift ./project --init
+designer-design-drift ./project
+designer-pick-references "high-density clinic schedule for practice managers"
+designer-design-audit --url http://localhost:5173 --out audit
+designer-record retrieve "high density operations"
+designer-knowledge
+designer-doctor --where
 ```
 
-Any other agent (Cursor, Codex, Claude Code, Aider…) needs no install — just point it at `SKILL.md`.
+Drift rejects planted rogue color/radius/spacing/type/motion defects. Browser audits
+are heuristic leads—not WCAG certification or an aesthetic verdict. Run outcome
+tests and the rendered two-critic review before calling significant UI work complete.
 
----
+## Update, migrate, uninstall safely
 
-## What the skill part actually does
+Managed copies are replaced only if their recorded manifest is unchanged. User edits
+cause refusal. Updates stage/validate/swap and roll back ordinary failures.
+Receipts are keyed by destination so user scope and multiple projects coexist.
 
-An **evidence-driven product-UI design workflow for coding agents**.
-
-Not an application. Not a CSS framework. Not a component library. It is one portable
-skill plus the deterministic tools that make a design decision stick — and the
-browser evidence that proves it did.
-
-```
-BRIEF
-  │
-  ├─ §0  tier router              decide the depth of work, out loud
-  ├─ §1  environment discovery    what system, stack and components already exist?
-  ├─ §3  product reasoning        who, what job, how often, what does a mistake cost?
-  ├─ §4  reference selection      rank by contextual fit; admit its own gaps
-  ├─ §5  DESIGN DIRECTOR          ONE written hypothesis, incl. anti-patterns
-  ├─ §6  design grammar           coupled tokens → LOCK it mechanically
-  ├─ §7  component reuse          project → registry → adapt → custom (justify last)
-  ├─ §8  implement                in the project's own stack
-  │
-  ├─ §9  browser loop             serve over HTTP → screenshot → console
-  ├─ §10 review                   audit + drift, classified to the right layer
-  ├─ §11 USER-FLOW TEST           drive the outcome, not the DOM
-  └─ §12 record                   approve / reject, stored outside the repo
+```sh
+designer-record import --from /path/to/legacy/evals             # preview
+designer-record import --from /path/to/legacy/evals --apply     # copy, never delete source
+designer-uninstall-agent --ai pi                              # preview
+designer-uninstall-agent --ai pi --apply
+npm uninstall -g @hariprasanth-nagaraj/designer
 ```
 
-## Why this exists
+If multiple registrations exist, select `--scope user|project`, `--destination <path>`,
+or explicitly `--all`. Edited copies and receipts are retained. Personal records
+remain unless `--purge-state` is explicitly requested. npm uninstall alone does not
+remove independent agent copies or personal state.
 
-Agents write plausible UI. Plausible is not coherent, and plausible is not verified.
-Three failure modes this package is built against:
+## Evidence and limits
 
-| Failure | Countermeasure |
-|---|---|
-| A two-pixel change triggers a design sprint | §0 tier router |
-| Every screen drifts into a different product | §5 Director + §6 grammar + `design-drift.mjs` |
-| "Looks fine" declared without looking | §9 browser loop + §11 flow test + honest reporting |
+The original Meridian benchmark passed 29 outcome checks; extraction preserved its
+static/browser audit behavior. Existing tests and CI are evidence for their actual
+scope, not universal client support or design-model equivalence.
+See [PARITY.md](docs/PARITY.md) for release-specific closure evidence and remaining
+external validation boundaries.
 
-## Requirements
+## Documents
 
-- **Node.js 20+** — the core needs nothing else.
-- A coding agent that can read files and run shell commands — **only** for the skill half.
+- [Install](docs/INSTALL.md), [profiles/overrides](docs/installation.md)
+- [Capabilities](references/capabilities.md), [agent support](docs/agent-support.md)
+- [Dependencies](docs/dependencies.md), [provenance](docs/PROVENANCE.md)
+- [Limitations](docs/limitations.md), [security](SECURITY.md)
 
-## Install
-
-```bash
-# tools only — no agent, no build step
-npm install -g @hari-prasanth-nagaraj/designer
-
-# or from source
-git clone https://github.com/Hari-prasanth-nagaraj/designer.git
-cd designer
-
-# browser extras (optional)
-node scripts/setup.mjs --profile browser --apply
-node scripts/install-agent.mjs --agent pi --apply   # register the skill
-node scripts/doctor.mjs --profile browser
-```
-
-`doctor.mjs` prints a **graded** verdict, not a single green tick:
-
-| Layer | Meaning |
-|---|---|
-| `INSTALLED` | required files and licences present |
-| `EXECUTABLE` | reference selection, drift and eval store actually run |
-| `BROWSER-READY` | a real browser launched, rendered and captured |
-| `AGENT-READY` | that agent discovers the skill |
-| `MCP-OPERATIONAL` | ⚠️ **never claimed automatically** — a config entry is not a working connection |
-| `PARTIAL` | an explicit, named limitation |
-
-Anything marked `!` is a declared limitation, not a silent success. **Do not claim a
-capability the doctor could not verify.**
-
-## Use it
-
-In pi:
-
-```text
-/skill:designer Design an approval workflow screen for finance operators.
-```
-
-Or just describe the work — the skill's description routes product-UI requests to it:
-
-```text
-This settings page feels generic. Make it better.
-```
-
-In any other file-capable agent (Cursor, Aider, Codex, Cline, …):
-
-```
-Read <path>/designer/SKILL.md and follow it for this task.
-Task: <your product-UI brief>.
-```
-
-See `adapters/` for per-agent detail: **`pi`** (primary), `codex`, `claude-code`,
-`generic`.
-
-## The tools
-
-Globally installed as `designer-*`; from source as `node scripts/*.mjs`.
-
-| Command | Purpose |
-|---|---|
-| `designer-doctor` | check what's working — start here |
-| `designer-design-drift <project>` | static design-lock enforcement. `--init` derives the allowlist from your own `--space-*` / `--radius*` tokens. |
-| `designer-design-audit --url <url>` | multi-viewport heuristic audit: overflow, focus, tap targets, accessible names, contrast, console |
-| `designer-pick-references "<query>"` | rank 141 bundled references by fit; reports coverage gaps instead of guessing |
-| `designer-record approve\|reject` | the taste layer — records what earned its place |
-| `designer-benchmark <id>` | run a fixed brief, score it on 12 dimensions |
-
-### Drift checking is the part most systems skip
-
-```bash
-designer-design-drift ./my-app --init   # once
-designer-design-drift ./my-app          # every change, and in CI
-```
-
-It exits non-zero and prints a **systemic rollup** first: *200 radius findings is one
-bad decision, not 200 bugs.*
-
-It also has a negative control in `tests/fixtures/drift-bad/` that **must** be
-rejected. A checker that cannot fail is worse than no checker — the test suite fails
-the build if that fixture ever starts passing.
-
-## Bundled reference data
-
-| Dataset | Entries | Licence |
-|---|---|---|
-| `data/brand-systems/` | 74 real design systems | MIT (VoltAgent) |
-| `data/style-archetypes/` | 67 style archetypes | MIT (Bergside) |
-| `data/ux-pipeline-skills/` | 7 UX pipeline skills | MIT (Rich Hemsley) |
-| `data/frontend-design.md` | AI-default calibration guidance | Apache-2.0 |
-
-### Deliberately NOT bundled
-
-`ui-ux-pro-max`, `baoyu-design`, `craft`, `accessibility` and `design-analysis` are
-**excluded because no redistributable licence was found** in the installed copies
-used to build this package. Bundling them without permission would be a violation.
-
-They are therefore **optional external packs**, and the core degrades honestly when
-they are absent:
-
-```
-LAYER A — product-type intelligence
-  (unavailable: ui-ux-pro-max is an optional external pack and is not installed)
-  This is an OPTIONAL pack. Without it, derive product-type decisions from
-  product context and Layer B. Do not treat Layer B alone as product-type truth.
-```
-
-See `docs/dependencies.md` for how to add them yourself.
-
-## Your data stays yours
-
-Eval records and install receipts live in an OS-appropriate state directory
-(`%LOCALAPPDATA%`, `~/Library/Application Support`, `$XDG_STATE_HOME`) — **never inside
-the checkout**. Updating or deleting this repo cannot destroy your design history.
-
-```bash
-node scripts/record.mjs --where
-```
-
-## Uninstall
-
-```bash
-npm uninstall -g @hari-prasanth-nagaraj/designer
-```
-
-Removes only what the installer created, refuses to follow a symlink into your
-checkout, keeps your eval records unless you pass `--purge-state`.
-
-## Docs
-
-| File | Covers |
-|---|---|
-| `docs/INSTALL.md` | **start here** — 2-minute install, with or without an agent |
-| `docs/installation.md` | detailed install, platform prerequisites, offline use |
-| `docs/dependencies.md` | every dependency, licence status, how to add the excluded packs |
-| `docs/agent-support.md` | support matrix — what is *tested* vs *documented* |
-| `docs/limitations.md` | what this package does not do |
-| `docs/PROVENANCE.md` | sources and adaptations, with the licence verification that produced it |
-| `SECURITY.md` | what each script touches on your machine |
-
-## Licence
-
-Authored code and documentation: **MIT**. Bundled third-party material: its own
-licence — see `THIRD_PARTY_NOTICES.md` and `licenses/upstream/`.
+Authored work: MIT. Bundled upstreams retain MIT/Apache-2.0 notices; see
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

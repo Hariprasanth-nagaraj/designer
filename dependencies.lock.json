@@ -1,62 +1,166 @@
 {
-  "schemaVersion": 1,
-  "package": "designer",
-  "version": "1.0.0",
-  "note": "Hashes let a reviewer confirm the exact logic shipped. Third-party data is captured by count+bytes; re-verify with git clone --depth 1 <source> && diff -r",
+  "schemaVersion": 2,
+  "package": "@hariprasanth-nagaraj/designer",
+  "version": "1.2.0",
+  "hashAlgorithm": "SHA-256; text line endings normalized to LF",
+  "packageContract": {
+    "engines": {
+      "node": ">=20"
+    },
+    "bin": {
+      "designer-doctor": "scripts/doctor.mjs",
+      "designer-setup": "scripts/setup.mjs",
+      "designer-install-agent": "scripts/install-agent.mjs",
+      "designer-uninstall-agent": "scripts/uninstall-agent.mjs",
+      "designer-pick-references": "scripts/pick-references.mjs",
+      "designer-record": "scripts/record.mjs",
+      "designer-design-drift": "scripts/design-drift.mjs",
+      "designer-design-audit": "scripts/design-audit.mjs",
+      "designer-benchmark": "benchmarks/run-benchmark.mjs",
+      "designer-knowledge": "scripts/knowledge.mjs"
+    },
+    "files": [
+      "SKILL.md",
+      "references/",
+      "scripts/",
+      "lib/",
+      "data/",
+      "benchmarks/",
+      "examples/",
+      "adapters/",
+      "docs/",
+      "tests/",
+      "licenses/",
+      "LICENSE",
+      "THIRD_PARTY_NOTICES.md",
+      "README.md",
+      "SECURITY.md",
+      "dependencies.lock.json"
+    ],
+    "pi": {
+      "skills": [
+        "SKILL.md"
+      ]
+    }
+  },
   "authored": {
-    "SKILL.md": "f61dd7ead3991954",
-    "benchmarks/01-fintech-trading-console.md": "eb11e3e18d7a99c2",
-    "benchmarks/02-clinic-scheduling.md": "88a43233903ccfe8",
-    "benchmarks/03-b2b-crm.md": "e6b97811cbbc7335",
-    "benchmarks/04-developer-tool.md": "01aab5100a30aed2",
-    "benchmarks/05-knowledge-research.md": "01da73d01cf5c3b2",
-    "benchmarks/06-smb-operations.md": "bad691d5e9225726",
-    "benchmarks/run-benchmark.mjs": "c66e869e5533f3f1",
-    "lib/paths.mjs": "3770ebd611db6ae9",
-    "references/DESIGN.md-template.md": "3c6f302d39b70f98",
-    "references/design-director.md": "5b99eabf3580372c",
-    "references/design-grammar.md": "517daa34fa6944a1",
-    "references/design-review.md": "f1e1a1e28039e33f",
-    "scripts/build-reference-index.mjs": "149ee3bf511db8b6",
-    "scripts/design-audit.mjs": "70621fd1962486fe",
-    "scripts/design-drift.mjs": "4253fdfac7b2481b",
-    "scripts/doctor.mjs": "c96a97666b23bdc7",
-    "scripts/install-agent.mjs": "9a2d85f8d500ee3d",
-    "scripts/pick-references.mjs": "65f30b42bf62348a",
-    "scripts/record.mjs": "e48bbf9d47b97eee",
-    "scripts/setup.mjs": "1d5ca7edfc35f01c",
-    "scripts/uninstall-agent.mjs": "c2e3c80dfc23db23"
+    "README.md": "2bdaab6acbbefd9a5b5b191ca9b1f6e91c1c54a764023a70d1a636af3b7835cc",
+    "SECURITY.md": "8a7f88b99a59a8ad827edb6c578c13f8eb0cf8d81bedef1ae4777327056ba8c4",
+    "SKILL.md": "7e55bf5e6ef527761fb10af2b6c619009b9bcc77d748b9801d859e1355b36a4d",
+    "THIRD_PARTY_NOTICES.md": "4c162cc1a0e37a6f6a3be063be7b474cfd4f81e458e9383f4f8a17b3f9b6434f",
+    "adapters/claude-code/README.md": "3c0d7626a4a1797e241436e02dd4327e04b69cd7409cb8c06591070a1bc0858b",
+    "adapters/codex/README.md": "5fecabec2b978427843c45a4161d47e7a136f4bae6f6155595b12746b9b0731e",
+    "adapters/generic/README.md": "7da82f6cbda33ea8cfe7f2f8a7fb581687263e814b5041e76871a8d61cbd4c11",
+    "adapters/pi/README.md": "ed0fe5cdbac1970caee6a0118b8b3250a550a14420a36b6af2ed8bdc0a9207a9",
+    "benchmarks/01-fintech-trading-console.md": "eb11e3e18d7a99c2ed955d2efa6240c23ddd86f5c6f61ffb34fdc04a6ee6af00",
+    "benchmarks/02-clinic-scheduling.md": "88a43233903ccfe85a7a217f5ca71a9675e0d9ea9ab0958cd1ffe401e426cbf7",
+    "benchmarks/03-b2b-crm.md": "e6b97811cbbc73358ef3722d8cf67b1a5fa828c284f7ec4d84d7cd7bef5b7aa2",
+    "benchmarks/04-developer-tool.md": "01aab5100a30aed2c7dc358b3f4649a28a256a891ff4a82c1a688693f7bcb551",
+    "benchmarks/05-knowledge-research.md": "01da73d01cf5c3b2497ce6882f258e28d95c2a2cb63e583f798bad862460a44c",
+    "benchmarks/06-smb-operations.md": "bad691d5e922572649ce993c5816c4f541a0b57fc4b20b696886db6acba55724",
+    "benchmarks/run-benchmark.mjs": "c57b3364af38ac831258d974304f9040147f921f8a51f9be6abe7df419840516",
+    "docs/DESIGN-SYSTEM.md": "971e9712d870bafaeee23407cce04934f339a68e299a5e014bbdceacba3342fd",
+    "docs/INSTALL.md": "33334c6c999be187cb84ffd935ce6ea9068a98c4b33d54c083ea26fe9525d34e",
+    "docs/PARITY.md": "3e2554bd2167e61622c46f75ba15a799ef1a09c8c311d4f2178006c7fb7ffa00",
+    "docs/PROVENANCE.md": "50a847c63eb4d1aea0947a93b246650126f7ea059ad829d4ee3c786730f8b291",
+    "docs/agent-support.md": "09830d2a71f812fa879d03614787521e07129aa3bbf0f8b4766f570421d61236",
+    "docs/dependencies.md": "85df4cdf0ffe60fcfacd4cd84ca5253fa941f6e336dfbce44783c31450b0c27a",
+    "docs/installation.md": "87ab726a1c189d44291330611bb3e72598d2cbd8aa9d21f9ffc8cdefb74880d7",
+    "docs/limitations.md": "7e4b3f641e85e0b9a7f97a3c4fce972acd25713215a2b71406eefac0b72eb019",
+    "lib/agents.mjs": "e28abd1e9b73f1bd464340c9725582b85a79dca931b7782c5d0c0039cfab93a5",
+    "lib/browser-runtime.mjs": "355307a76932c7c4ad98acb671cafa94a3662dead3c80a218e54b8e5b1b36148",
+    "lib/installations.mjs": "aadccf8b1f85ca932c47f28d37fcec716421cc823b0ba388e6f3f27d3e070e11",
+    "lib/paths.mjs": "7ecc83ecbb8887161da07146a12a514b85adc936fa1de33b38723833b689d1d2",
+    "references/DESIGN.md-template.md": "3c6f302d39b70f980bf6a0e2edf0cb2a649287555c4064320f34249f4e723afd",
+    "references/capabilities.md": "256f3bd4b97c684e31be8ffd57a28d97c66d99aafcea2cfd504ede6db660b3a4",
+    "references/design-director.md": "5b99eabf3580372c89b7b76d706e7aecd1a488585e4e146ca96acac905d5f3ee",
+    "references/design-grammar.md": "71f88c3845eba314afc19d207fa7674b6806384a46cb2e6f19bebf5304da5f2b",
+    "references/design-review.md": "36ef0ac20502adf462a21b4602276d80eaa0dcf3db0d17b410325532f9a75589",
+    "scripts/build-manifest.mjs": "7c75a90f2248bafc290c3d57866c4cdd7ffd39af0f2c892754fc72f7e859c17a",
+    "scripts/build-reference-index.mjs": "149ee3bf511db8b68bba0886fd628c1af9aa07eb096dd3ad1af08bf9230dbf58",
+    "scripts/design-audit.mjs": "0b0febb24e189a55d674e11e388b9235969b677df8fae104805c26b7cb5c17d3",
+    "scripts/design-drift.mjs": "4253fdfac7b2481be31e5c784b43a7fb91f4bff2fba680844e566207c38281a2",
+    "scripts/doctor.mjs": "f2a28e9e20d1e463a4da72845d88ab25bdfebe72f8e1b32f454318c4c3922f4a",
+    "scripts/install-agent.mjs": "cdc33cf2dc4a8be4cef5c8a48cd043be5d6951e51d1b46d4bd5c5b0294982c57",
+    "scripts/knowledge.mjs": "7cbb78a0b0a41b716ecc4c29d71a3f4e302dcb3c9c8f890daa930ab438ce4b0b",
+    "scripts/pick-references.mjs": "934ae23169033b58f9601329b6f99303dd3f9e342f3fb3bb58bf3dfe9580871c",
+    "scripts/record.mjs": "377fa92d61d8c0db39b19595b911b7fd0afea802051e8810ae3a282e593a3db0",
+    "scripts/setup.mjs": "1a80622c91f620a63e261ff79089d5884fc18d1b153fcfe60ab658aeb68c082c",
+    "scripts/uninstall-agent.mjs": "0012a865f2fb511274a803b77b4b890ba4195d017f3507a96e1f3059127e5f6a",
+    "tests/distribution-tests.mjs": "f7ffda3fd9fc30102031fd201aa17ac51dcf9862bca956162118bc3d3ee388f9",
+    "tests/fixtures/browser/index.html": "d2d7616aa1ee4901d96d286389f3821788e6cffb6637b15857ae87dbea2f8f60",
+    "tests/fixtures/browser/tokens.css": "8660dbd8eaa417b84f8992c2c572a04c77dcfb7bb48c54ecb195064d935d7f6d",
+    "tests/fixtures/drift-bad/design-drift.config.json": "72e25a29e378b753fc3347cfa0290d5a1811380c5f7ac1646a571ab6b5442fc2",
+    "tests/fixtures/drift-bad/package.json": "f1da9a23397b94cbe1ae0bb1eaa6da20c52b753f3a18d8b2a6560ddd17da72c0",
+    "tests/fixtures/drift-bad/styles/app.css": "92a296ce66690717b99897e998ac44ebd23eb7d96047f9ef95c52f817db5eb4a",
+    "tests/fixtures/drift-bad/styles/tokens.css": "8903efbea0b8e780c5aab617d0d0e3160ed6f51722c75a23a5b19cdd95e1c525",
+    "tests/fixtures/drift-ok/design-drift.config.json": "4f81cc3e4b1f1ac8cb8e2ca984938a26c08b65fe7a5747cc49577d067a6c7023",
+    "tests/fixtures/drift-ok/package.json": "49e89f373a959b6cf0bb6bc133e58f332e9aa4b9bcf65a0de8681d41f5c8a605",
+    "tests/fixtures/drift-ok/styles/app.css": "94159d5be65245efdafd1b642e8f7296fbe08d1257a8d336d6a9b480e6962f3d",
+    "tests/fixtures/drift-ok/styles/tokens.css": "7cfae851eb04dc8068c0a80d8e7eb0b9311df31f291b9919c4307e32ef74e9b9",
+    "tests/parity-tests.mjs": "1b23c6ecbb26bf9e43e8b74fd4e24e0ac9ae011ced72342e48684d715d96c420",
+    "tests/run-tests.mjs": "8e2f9b300c8379610a503a30cd6c6e37108952666536db7565bf1754fc078f9f"
+  },
+  "data": {
+    "data/agents.json": "f3465ef92c687d3f9177690796bba76e73ee3bbffe41faba2b7fd0736884849c",
+    "data/optional-packs.json": "e9c656e5653e224132c94fb57b683a528392c5c40dfe0f8a4bfafdead58e1d19",
+    "data/frontend-design.md": "d91970639e9f5c37682ac7ab60094d35f1c7c1f38d731bd56396563aee10c1d3",
+    "data/reference-index.json": "d52f8aa12f5c6bf9659df989b31e2af579623454fc94441dff14c5ba32b59585",
+    "licenses/upstream/awesome-design-md/LICENSE": "0862a727415509d17206d78bfbfe2f6b142f2c2833283b457a6f0db972ee6ed3",
+    "licenses/upstream/awesome-design-skills/LICENSE": "ce33a0609e3e4d01c07d5291358929bd98b53e9d82b6dc6b9175cd3ec424a4f9",
+    "licenses/upstream/claude-design-skills/LICENSE": "2ad9ae0f9dee8f6ce77155529bbb911443e47aaa87df08bc7ee22eca3638a7ce",
+    "licenses/upstream/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "licenses/upstream/uipm-stack/LICENSE": "738f69dfa83db5c347c678fb9d90e560877059f0de93a327c39001bff92dc014",
+    "licenses/upstream/uipm-stack/SOURCE.json": "b40f1bf8fdf422874272a204d40f6c00610ec45a1b853d39789f989510f127d9"
   },
   "bundledData": {
     "brand-systems": {
       "files": 147,
-      "bytes": 2206160
+      "bytes": 2165423,
+      "sha256": "3f1394d91b8aedc8328640cf6ad0cbcbaf387b53f542754add9c4ad43f0d6fa3"
     },
     "style-archetypes": {
-      "files": 136,
-      "bytes": 384278
+      "files": 135,
+      "bytes": 358112,
+      "sha256": "f453a28dc44749804dd2ab921ed76fe1a886249141e7c635f9695c970650f3a1"
     },
     "ux-pipeline-skills": {
       "files": 15,
-      "bytes": 225946
+      "bytes": 221908,
+      "sha256": "7732234c3168908d35d5622b87bf6381a93e38f4d11d78b31e9d0092a63d1c13"
+    },
+    "product-intelligence": {
+      "files": 1,
+      "bytes": 75623,
+      "sha256": "9dce995c7da923f0e40a0dfed2b8b87fde62707730c8cdfa7e1f371425917d08"
     }
   },
-  "generated": [
-    "data/reference-index.json"
-  ],
+  "upstream": {
+    "source": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+    "commit": "09170eec67eefd46a7ae85de61b40c194020f997",
+    "licenseSha256": "738f69dfa83db5c347c678fb9d90e560877059f0de93a327c39001bff92dc014",
+    "files": {
+      "stack/scripts/design-audit.mjs": "70621fd1962486fef2214fc9574b6c2ece1cd87ee61b5b4b797abf179c6af856",
+      "stack/.claude/agents/design-review.md": "63e9d3bc54ff4720c19fde087fcc2e499b2fdc7342f3d36b1e70a6f9c0d58d0f"
+    },
+    "productsMatchLocal": true
+  },
   "runtimeDependencies": {
     "playwright": "1.63.0"
   },
-  "externalPacksNotBundled": [
-    {
-      "name": "ui-ux-pro-max",
-      "reason": "no LICENSE file in installed copy",
-      "provides": "Layer A product-type intelligence"
+  "optionalPacks": {
+    "ui-ux-pro-max": {
+      "repository": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill.git",
+      "commit": "09170eec67eefd46a7ae85de61b40c194020f997",
+      "skillPath": ".claude/skills/ui-ux-pro-max",
+      "dataPath": "src/ui-ux-pro-max",
+      "licensePath": "LICENSE"
     },
-    {
-      "name": "baoyu-design",
-      "reason": "no LICENSE file in installed copy",
-      "provides": "craft methodology + design-system authoring"
+    "baoyu-design": {
+      "repository": "https://github.com/JimLiu/baoyu-design.git",
+      "commit": "6530033592bf7fa58bc1a5a2a2ad278da45213a9",
+      "skillPath": "skills/baoyu-design",
+      "licensePath": "LICENSE"
     }
-  ]
+  }
 }

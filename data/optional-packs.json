@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "packs": {
+    "ui-ux-pro-max": {
+      "repository": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill.git",
+      "commit": "09170eec67eefd46a7ae85de61b40c194020f997",
+      "skillPath": ".claude/skills/ui-ux-pro-max",
+      "dataPath": "src/ui-ux-pro-max",
+      "licensePath": "LICENSE"
+    },
+    "baoyu-design": {
+      "repository": "https://github.com/JimLiu/baoyu-design.git",
+      "commit": "6530033592bf7fa58bc1a5a2a2ad278da45213a9",
+      "skillPath": "skills/baoyu-design",
+      "licensePath": "LICENSE"
+    }
+  }
+}

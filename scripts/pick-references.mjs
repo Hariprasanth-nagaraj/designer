@@ -83,7 +83,8 @@ function csvParse(text) {
 let productTypes = [];
 let layerAStatus = { present: false, reason: "", count: 0 };
 const uipmRoot = findPack("ui-ux-pro-max");
-const uipmCsv = uipmRoot ? join(uipmRoot, "data", "products.csv") : null;
+const externalCsv = uipmRoot ? join(uipmRoot, "data", "products.csv") : null;
+const uipmCsv = externalCsv && existsSync(externalCsv) ? externalCsv : join(paths.data, "product-intelligence", "products.csv");
 
 if (uipmCsv && existsSync(uipmCsv)) {
   const [head, ...rows] = csvParse(readFileSync(uipmCsv, "utf8"));
@@ -94,16 +95,16 @@ if (uipmCsv && existsSync(uipmCsv)) {
   for (const r of rows) {
     if (!r[cType]) continue;
     productTypes.push({
-      type: r[cType], keywords: cKw ? (r[cKw] ?? "") : "",
+      type: r[cType], keywords: cKw > -1 ? (r[cKw] ?? "") : "",
       style: cStyle > -1 ? (r[cStyle] ?? "") : "",
       landing: cLanding > -1 ? (r[cLanding] ?? "") : "",
       dashboard: cDash > -1 ? (r[cDash] ?? "") : "",
       palette: cPal > -1 ? (r[cPal] ?? "") : "",
       considerations: cKey > -1 ? (r[cKey] ?? "") : "",
-      tokens: new Set(tokenize(`${r[cType]} ${cKw ? (r[cKw] ?? "") : ""}`)),
+      tokens: new Set(tokenize(`${r[cType]} ${cKw > -1 ? (r[cKw] ?? "") : ""}`)),
     });
   }
-  layerAStatus = { present: true, reason: "", count: productTypes.length };
+  layerAStatus = { present: true, reason: "", count: productTypes.length, source: uipmCsv === externalCsv ? "external" : "bundled" };
 } else {
   layerAStatus = {
     present: false,

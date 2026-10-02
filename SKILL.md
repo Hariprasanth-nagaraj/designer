@@ -12,8 +12,8 @@ description: >-
 license: MIT
 compatibility: "Node.js 20+. The core needs no browser. Browser review needs Playwright (see setup). Optional MCP servers improve interactive inspection."
 metadata:
-  version: "1.0.0"
-  package: "designer"
+  version: "1.2.0"
+  package: "@hariprasanth-nagaraj/designer"
 ---
 
 # Designer
@@ -88,6 +88,17 @@ Report three things before designing: **the stack**, **the existing design syste
 
 ---
 
+## 2a. Route intelligence and retrieve preferences
+
+Read `references/capabilities.md` and load only the authority needed for this tier.
+For Tier 2–4, read `data/frontend-design.md` as an aesthetic influence. For Tier 3–4,
+select the relevant bundled UX stage before designing; do not run a second orchestrator.
+Run `node <packageRoot>/scripts/knowledge.mjs` to locate optional methodology/search
+packs and `node <packageRoot>/scripts/record.mjs retrieve "<task>"` for relevant personal
+preferences. Record what was actually loaded and explicitly name unavailable enrichment.
+
+---
+
 ## 3. Product / UX reasoning — Tier 3–4, before any component
 
 The failure this prevents: `feature request → component → code`.
@@ -121,9 +132,9 @@ Two layers:
 - **Layer B (bundled, always available):** 74 real design systems + 67 style archetypes,
   MIT-licensed and shipped in `data/`. Answers "how does a mature team relate colour,
   type, density and surfaces".
-- **Layer A (optional external pack):** product-type intelligence. Answers "what does this
-  *kind* of product look like". **Not bundled** — no redistributable licence was found for
-  the upstream install. If absent the script says so; it never fabricates a match.
+- **Layer A (bundled):** 192 product types from a pinned, MIT-verified upstream snapshot.
+  Answers "what does this *kind* of product look like". An optional full ui-ux-pro-max
+  pack adds palette/type/chart/stack search; it does not choose the final direction.
 
 Layer B is marketing/design-site shaped, so clinical, CRM and internal-ops coverage is
 genuinely thin. `pick-references.mjs` reports its own gaps. **A gap is information, not a
@@ -269,7 +280,9 @@ hidden actions, lost context, duplicated information, unclear confirmation, miss
 recovery, terminology the domain would not use, modal overuse.
 
 Assert the *outcome* in a script wherever you can — a scripted flow test is more reliable
-than a manual pass and is re-runnable after the next refactor.
+than a manual pass and is re-runnable after the next refactor. In a standalone flow script,
+import `loadPlaywright` from `<packageRoot>/lib/browser-runtime.mjs`, then use
+`const { chromium } = await loadPlaywright()` so installed copies share the pinned runtime.
 
 ---
 

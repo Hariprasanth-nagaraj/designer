@@ -27,7 +27,9 @@
  * user's design history, and the package can never contain someone else's
  * records. Override with DESIGNER_STATE=<dir>.
  */
-import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync, lstatSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { resolve } from "node:path";
 import { join } from "node:path";
 import { paths, displayPath } from "../lib/paths.mjs";
 
@@ -49,13 +51,52 @@ const stamp = () => new Date().toISOString().slice(0, 10);
 
 function write(dir, project, rec) {
   mkdirSync(dir, { recursive: true });
-  const name = `${stamp()}-${slug(project)}${existsSync(join(dir, `${stamp()}-${slug(project)}.md`)) ? "-2" : ""}.md`;
-  const path = join(dir, name);
-  writeFileSync(path, rec);
-  return path;
+  const base = `${stamp()}-${slug(project)}`;
+  for (let n = 1; n < 10000; n++) {
+    const path = join(dir, `${base}${n > 1 ? "-" + n : ""}.md`);
+    try { writeFileSync(path, rec, { flag: "wx" }); return path; }
+    catch (e) { if (e.code !== "EEXIST") throw e; }
+  }
+  throw new Error("Too many records for this project/date");
 }
 
 const asList = (s) => (s ? s.split(/\s*[,;]\s*/).filter(Boolean) : []);
+
+if (cmd === "import") {
+  const from = flag("from");
+  if (!from) { console.error("import needs --from <legacy evals directory> [--apply]"); process.exit(2); }
+  const source = resolve(from);
+  const apply = argv.includes("--apply");
+  if (!existsSync(source)) { console.error("Source directory missing"); process.exit(2); }
+  if (source === resolve(paths.evals)) { console.error("Source and destination must differ"); process.exit(2); }
+  let imported = 0, skipped = 0;
+  for (const kind of ["approved", "rejected"]) {
+    const dir = join(source, kind), dest = join(paths.evals, kind);
+    if (!existsSync(dir)) continue;
+    const existing = collect(dest, kind);
+    for (const name of readdirSync(dir).filter(n => n.endsWith(".md"))) {
+      const file = join(dir, name);
+      if (!lstatSync(file).isFile() || lstatSync(file).isSymbolicLink()) throw new Error("Refusing non-file import: " + file);
+      const raw = readFileSync(file, "utf8"), sha = createHash("sha256").update(raw).digest("hex");
+      if (existing.some(r => r.body === raw || r.body.includes("designer-import source-sha256: " + sha))) { skipped++; continue; }
+      console.log((apply ? "Import " : "Would import ") + kind + "/" + name);
+      if (apply) {
+        mkdirSync(dest, {recursive:true});
+        const base = name.slice(0, -3);
+        for (let n = 1; n < 10000; n++) {
+          const target = join(dest, base + (n > 1 ? "-" + n : "") + ".md");
+          try {
+            const body = raw + "\n<!-- designer-import source-sha256: " + sha + " -->\n";
+            writeFileSync(target, body, {flag:"wx"}); existing.push({body}); break;
+          } catch(e) { if(e.code !== "EEXIST") throw e; }
+        }
+      }
+      imported++;
+    }
+  }
+  console.log((apply ? "Imported " : "Planned ") + imported + "; identical records skipped " + skipped + ". Source untouched.");
+  process.exit(0);
+}
 
 if (cmd === "approve" || cmd === "reject") {
   const project = flag("project");
@@ -108,7 +149,7 @@ function collect(dir, label) {
  * labelled and listed separately, so a user never mistakes a sample for their
  * own recorded judgment.
  */
-const collectAll = (dir, label) => [...collect(dir, label), ...collect(EXAMPLES, "example")];
+const collectAll = (dir, label) => [...collect(dir, label), ...(argv.includes("--include-examples") ? collect(EXAMPLES, "example").filter(r => label === "approved" ? r.heading.startsWith("Approved") : r.heading.startsWith("Rejected")) : [])];
 
 if (cmd === "list" || !cmd) {
   for (const [label, dir] of [["APPROVED", APPROVED], ["REJECTED", REJECTED], ["BENCHMARKS", BENCH]]) {
@@ -162,7 +203,7 @@ if (cmd === "retrieve") {
   console.log(`Preference records that apply to "${argv.slice(1).join(" ")}"\n`);
   for (const { r, score } of scored) {
     console.log(`── ${r.dir}/${r.file}  [relevance ${score}]`);
-    console.log(r.body.split("\n").slice(0, 14).map((l) => "   " + l).join("\n").trim());
+    console.log(r.body.split("\n").slice(0, 80).map((l) => "   " + l).join("\n").trim());
     console.log();
   }
   process.exit(0);

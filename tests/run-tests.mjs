@@ -76,7 +76,7 @@ it("PACKAGING","package.json is valid and declares MIT + engines", () => {
   // prove its own drift checker still fails when it should.
   assert(p.files?.includes("tests/"), "must ship tests/ (negative control)");
 });
-it("PACKAGING","every declared bin target exists and runs", () => {
+it("PACKAGING","every declared bin target exists and is syntax-valid", () => {
   const p = JSON.parse(readFileSync(join(paths.packageRoot, "package.json"), "utf8"));
   for (const [bin, rel] of Object.entries(p.bin ?? {})) {
     assert(existsSync(join(paths.packageRoot, rel)), `bin "${bin}" points at missing file ${rel}`);
@@ -104,7 +104,7 @@ it("PACKAGING","every bundled dataset has its upstream licence text on disk", ()
     assert(existsSync(join(dir, "LICENSE")) || existsSync(join(dir, "LICENSE.txt")), `missing licence for ${d}`);
   }
 });
-it("PACKAGING","NOTICE declares the excluded (unlicensed) packs", () => {
+it("PACKAGING","NOTICE declares optional full enrichment packs", () => {
   const n = readFileSync(join(paths.packageRoot, "THIRD_PARTY_NOTICES.md"), "utf8");
   for (const s of ["ui-ux-pro-max", "baoyu-design"]) assert(n.includes(s), `should declare excluded pack ${s}`);
 });
@@ -170,7 +170,7 @@ it("REFERENCE SELECTION","Layer B returns references for a real query", () => {
   const out = JSON.parse(r.stdout);
   assert(out.layerB.length > 0, "expected at least one reference");
 });
-it("REFERENCE SELECTION","Layer A degrades honestly when the optional pack is absent", () => {
+it("REFERENCE SELECTION","Layer A is bundled when full search enrichment is absent", () => {
   const r = run(join(paths.scripts, "pick-references.mjs"), ["anything", "--json"], { DESIGNER_UIPM: join(SANDBOX, "nope") });
   const out = JSON.parse(r.stdout);
   // Either the pack is genuinely absent (honest unavailable) OR it is present with a reason.
@@ -238,6 +238,7 @@ it("AGENT ADAPTERS","doctor runs and reports a graded verdict", () => {
   const out = JSON.parse(r.stdout);
   assert(out.summary && typeof out.summary === "object", "no summary");
   assert(typeof out.ok === "boolean", "no ok flag");
+  assert(r.status === 0 && out.coreOk === true, `core readiness failed: ${r.stdout}`);
 });
 
 for (const [section, name, fn] of pending) await test(section, name, fn);
