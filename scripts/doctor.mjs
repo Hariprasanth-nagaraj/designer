@@ -79,4 +79,5 @@ else {
   console.log('Core executable: '+coreOk+'; browser ready: '+browserReady+'; requested profile ready: '+profileReady);
   console.log('PARTIAL is unverified, not a successful discovery/connection claim. Full profile requires client-side evidence.');
 }
-process.exit(!coreOk?1:profileReady?0:2);
+// Let piped stdout drain (macOS pipes can buffer only 8 KiB).
+process.exitCode = !coreOk ? 1 : profileReady ? 0 : 2;
