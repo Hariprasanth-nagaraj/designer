@@ -1,6 +1,6 @@
 {
   "name": "@hari-prasanth-nagaraj/designer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "An evidence-driven product-UI design workflow for coding agents: tier router, Design Director, coupled design grammar, contextual reference selection, static drift checking, browser review and user-flow testing. Not an application, framework or component library.",
   "license": "MIT",
   "type": "module",
@@ -74,6 +74,8 @@
     "type": "git",
     "url": "git+https://github.com/Hariprasanth-nagaraj/designer.git"
   },
-  "bugs": { "url": "https://github.com/Hariprasanth-nagaraj/designer/issues" },
+  "bugs": {
+    "url": "https://github.com/Hariprasanth-nagaraj/designer/issues"
+  },
   "homepage": "https://github.com/Hariprasanth-nagaraj/designer#readme"
 }
