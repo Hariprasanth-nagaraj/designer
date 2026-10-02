@@ -24,7 +24,25 @@ const flag = (n, d = null) => { const i = argv.indexOf(`--${n}`); return i > -1 
 const has = (n) => argv.includes(n);
 const APPLY = has("--apply");
 const PURGE = has("--purge-state");
-const AGENT = flag("agent", "pi");
+const AGENT = flag("agent") ?? flag("ai", null);
+
+if (!AGENT) {
+  console.log("\nUNINSTALL — Designer\n" + "-".repeat(60));
+  console.log("Nothing to do: pass which agent. Example:");
+  console.log("  designer-uninstall-agent --ai pi --apply");
+  console.log("\nInstalled agents:");
+  let any = false;
+  try {
+    for (const f of readdirSync(paths.receipts).filter((f) => f.endsWith(".json"))) {
+      any = true;
+      const r = JSON.parse(readFileSync(join(paths.receipts, f), "utf8"));
+      console.log(`  ${String(r.agent).padEnd(12)} ${displayPath(r.destination)}`);
+    }
+  } catch {}
+  if (!any) console.log("  (none)");
+  console.log("\nPersonal design records are NEVER removed unless you pass --purge-state.\n");
+  process.exit(0);
+}
 
 const receiptPath = join(paths.receipts, `${AGENT}.json`);
 console.log(`\nUNINSTALL — ${AGENT}${APPLY ? "  (APPLYING)" : "  (DRY RUN — nothing will change)"}\n${"-".repeat(60)}`);

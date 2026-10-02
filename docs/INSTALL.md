@@ -8,7 +8,7 @@ Two minutes. Pick the row that matches you.
 | **Find design references for a brief** | same install | **No** |
 | **Record design decisions** | same install | **No** |
 | **Audit a running page in a browser** | same install + `npx playwright install chromium` | **No** |
-| **Get an agent to design a screen for me** | same install + tell your agent one line | Yes |
+| **Get an agent to design a screen for me** | `npm i -g …` then `designer-install-agent --ai <agent>` | Yes |
 
 **The core needs nothing but Node 20+.** No npm install step, no build, no account.
 
@@ -102,37 +102,73 @@ Your records live outside the package — uninstalling never deletes them.
 
 ## Using it with an AI agent
 
-The package also ships `SKILL.md` — instructions that teach an agent *how* to design.
-The CLI gives an agent its instruments; the skill gives it judgement.
-
-**With pi:**
+`npm install -g` gives you the **tools**. The **skill** is one deliberate step —
+only you know which agent you use.
 
 ```bash
-designer-install-agent --agent pi          # dry run
-designer-install-agent --agent pi --apply  # register it
+designer-install-agent              # what did it detect?
+designer-install-agent --list       # every supported agent
+designer-install-agent --ai pi      # dry run for one
+designer-install-agent --ai pi --apply
+designer-install-agent --ai all --apply     # every detected agent
 ```
 
-Then in pi:
+```
+detected on this machine: universal, pi, claude, codex, cursor, gemini, opencode
+
+  ✓ universal    Universal / Agent Skills spec  [verified]
+  ✓ pi           pi                             [verified]
+  ✓ claude       Claude Code                    [verified]
+  ✓ codex        Codex CLI                      [verified]
+  ✓ cursor       Cursor                         [unverified]
+```
+
+Then restart the agent and:
 
 ```text
-/skill:designer Design an approval workflow screen for finance operators.
+/designer  Design an approval workflow screen for finance operators.
 ```
 
-**With any other agent** (Cursor, Codex, Claude Code, Aider, Cline…) — no install
-needed. Paste this:
-
-```
-Read <path-to-package>/SKILL.md and follow it for this task.
-Task: <your request>.
-```
-
-Find the path with:
+### Per-project install
 
 ```bash
-designer-doctor --where
+cd my-project
+designer-install-agent --ai claude --scope project --apply
 ```
 
-To make it stick for a whole repo, add that snippet to your `AGENTS.md`.
+### Supported agents
+
+`universal` · `pi` · `claude` · `codex` · `cursor` · `gemini` · `opencode` ·
+`copilot` · `windsurf` · `kilo` · `roo` · `trae` · `qoder` · `antigravity` ·
+`factory` · `warp` · `aider` · `cline` · `continue` · `augment`
+
+`universal` installs to `~/.agents/skills/` — the cross-vendor standard. **If you
+aren't sure, use that one.**
+
+Missing yours? Add it in one line of JSON, no code change:
+
+```bash
+$EDITOR "$(npm root -g)/@hari-prasanth-nagaraj/designer/data/agents.json"
+```
+
+```json
+{ "id": "myagent", "label": "My Agent",
+  "dirs": ["~/.myagent/skills"], "detect": ["~/.myagent"] }
+```
+
+### If the agent doesn't pick it up
+
+Every client is different and they change. This always works — no install needed:
+
+```
+Read <path>/SKILL.md and follow it for this task.
+```
+
+```bash
+designer-doctor --where    # prints the exact path
+```
+
+To make it stick for a whole repo, paste that snippet into `AGENTS.md`.
 
 ---
 
@@ -164,10 +200,13 @@ Without it, `designer-pick-references` still works and says so honestly.
 ## Uninstall
 
 ```bash
+designer-uninstall-agent                       # what did I install?
+designer-uninstall-agent --ai pi --apply
 npm uninstall -g @hari-prasanth-nagaraj/designer
 ```
 
-Your design records are kept unless you explicitly delete them.
+Removes only what it created, and only if you haven't edited it. Your design
+records are kept unless you pass `--purge-state`.
 
 ---
 
@@ -180,6 +219,12 @@ On Windows it is usually `%APPDATA%\npm`.
 `npx playwright install chromium`.
 
 **It says Layer A is unavailable** — that's the optional pack. Not a fault.
+
+**The agent doesn't see `/designer`** — run `designer-doctor --where` and use the
+manual bridge. Client skill support varies and changes between versions.
+
+**Skill already exists** — the installer refuses to overwrite anything it didn't
+create, and exits with an error. Rename or remove the old one first.
 
 **Drift checker reports hundreds of findings** — read the rollup first. It's one bad
 decision, not hundreds of bugs.

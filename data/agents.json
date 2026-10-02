@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "note": "Agent skill-install registry. `dirs` is where the skill is installed (user scope); `detect` is what proves the agent is installed. `confidence: verified` means confirmed against a real install on a working machine; `documented` means the convention is known but unconfirmed here. Add your own agent by copying an entry — nothing else needs to change.",
+  "agents": [
+    {
+      "id": "universal",
+      "label": "Universal / Agent Skills spec",
+      "confidence": "verified",
+      "dirs": ["~/.agents/skills"],
+      "detect": ["~/.agents"],
+      "notes": "The cross-vendor standard location. Most newer agents read this. Installing here is the safest default if you are unsure."
+    },
+    {
+      "id": "pi",
+      "label": "pi",
+      "confidence": "verified",
+      "dirs": ["~/.pi/agent/skills"],
+      "detect": ["~/.pi"],
+      "notes": "Also supports native packages: pi install npm:@hari-prasanth-nagaraj/designer"
+    },
+    {
+      "id": "claude",
+      "label": "Claude Code",
+      "confidence": "verified",
+      "dirs": ["~/.claude/skills"],
+      "detect": ["~/.claude"],
+      "projectDirs": [".claude/skills"],
+      "notes": "Invoke with /designer."
+    },
+    {
+      "id": "codex",
+      "label": "Codex CLI",
+      "confidence": "verified",
+      "dirs": ["~/.codex/skills"],
+      "detect": ["~/.codex"],
+      "projectDirs": [".codex/skills"],
+      "notes": "If your Codex build does not discover it there, use the manual bridge instead."
+    },
+    {
+      "id": "cursor",
+      "label": "Cursor",
+      "confidence": "documented",
+      "dirs": ["~/.cursor/skills"],
+      "detect": ["~/.cursor"],
+      "projectDirs": [".cursor/skills"],
+      "notes": "If your build does not read the skills dir, use the AGENTS.md bridge."
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini CLI",
+      "confidence": "documented",
+      "dirs": ["~/.gemini/skills"],
+      "detect": ["~/.gemini"],
+      "projectDirs": [".gemini/skills"],
+      "notes": "Some builds use GEMINI.md instead of skills; use the bridge if so."
+    },
+    {
+      "id": "opencode",
+      "label": "OpenCode",
+      "confidence": "documented",
+      "dirs": ["~/.config/opencode/skills"],
+      "detect": ["~/.config/opencode"],
+      "projectDirs": [".opencode/skills"]
+    },
+    {
+      "id": "copilot",
+      "label": "GitHub Copilot",
+      "confidence": "documented",
+      "dirs": ["~/.config/github-copilot/skills"],
+      "detect": ["~/.config/github-copilot"],
+      "projectDirs": [".github/skills"]
+    },
+    {
+      "id": "windsurf",
+      "label": "Windsurf",
+      "confidence": "documented",
+      "dirs": ["~/.codeium/windsurf/skills"],
+      "detect": ["~/.codeium/windsurf"],
+      "projectDirs": [".windsurf/skills"]
+    },
+    {
+      "id": "kilo",
+      "label": "Kilo Code",
+      "confidence": "documented",
+      "dirs": ["~/.kilocode/skills"],
+      "detect": ["~/.kilocode"],
+      "projectDirs": [".kilocode/skills"]
+    },
+    {
+      "id": "roo",
+      "label": "Roo Code",
+      "confidence": "documented",
+      "dirs": ["~/.roo/skills"],
+      "detect": ["~/.roo"],
+      "projectDirs": [".roo/skills"]
+    },
+    {
+      "id": "trae",
+      "label": "Trae",
+      "confidence": "documented",
+      "dirs": ["~/.trae/skills"],
+      "detect": ["~/.trae"],
+      "projectDirs": [".trae/skills"]
+    },
+    {
+      "id": "qoder",
+      "label": "Qoder",
+      "confidence": "documented",
+      "dirs": ["~/.qoder/skills"],
+      "detect": ["~/.qoder"],
+      "projectDirs": [".qoder/skills"]
+    },
+    {
+      "id": "antigravity",
+      "label": "Antigravity",
+      "confidence": "documented",
+      "dirs": ["~/.antigravity/skills"],
+      "detect": ["~/.gemini/antigravity"],
+      "projectDirs": [".antigravity/skills"]
+    },
+    {
+      "id": "factory",
+      "label": "Factory (Droid)",
+      "confidence": "documented",
+      "dirs": ["~/.factory/skills"],
+      "detect": ["~/.factory"],
+      "projectDirs": [".factory/skills"]
+    },
+    {
+      "id": "warp",
+      "label": "Warp",
+      "confidence": "documented",
+      "dirs": ["~/.warp/skills"],
+      "detect": ["~/.warp"],
+      "projectDirs": [".warp/skills"]
+    },
+    {
+      "id": "aider",
+      "label": "Aider",
+      "confidence": "documented",
+      "dirs": ["~/.aider/skills"],
+      "detect": ["~/.aider"],
+      "projectDirs": [".aider/skills"],
+      "notes": "Usually reached via the AGENTS.md bridge rather than a skills dir."
+    },
+    {
+      "id": "cline",
+      "label": "Cline",
+      "confidence": "documented",
+      "dirs": ["~/.cline/skills"],
+      "detect": ["~/.cline"],
+      "projectDirs": [".clinerules"]
+    },
+    {
+      "id": "continue",
+      "label": "Continue",
+      "confidence": "documented",
+      "dirs": ["~/.continue/skills"],
+      "detect": ["~/.continue"],
+      "projectDirs": [".continue/skills"]
+    },
+    {
+      "id": "augment",
+      "label": "Augment",
+      "confidence": "documented",
+      "dirs": ["~/.augment/skills"],
+      "detect": ["~/.augment"],
+      "projectDirs": [".augment/skills"]
+    }
+  ]
+}
