@@ -22,7 +22,7 @@ flow/
 screenshots/
 
 # personal eval state must never be committed, even if someone sets
-# AI_PRODUCT_DESIGN_STATE to a path inside the checkout
+# DESIGNER_STATE to a path inside the checkout
 approved/
 rejected/
 evals/approved/

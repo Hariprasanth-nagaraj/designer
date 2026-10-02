@@ -34,7 +34,7 @@ if (!existsSync(receiptPath)) {
   console.log("This tool only removes registrations it made itself, so nothing was found to do.");
   console.log(`If you installed manually, remove the skill directory yourself:\n`);
   const home = homedir();
-  const guess = process.platform === "win32" ? join(home, ".pi", "agent", "skills", "ai-product-design") : join(home, ".config", "pi", "agent", "skills", "ai-product-design");
+  const guess = process.platform === "win32" ? join(home, ".pi", "agent", "skills", "designer") : join(home, ".config", "pi", "agent", "skills", "designer");
   console.log(`  ${displayPath(guess)}\n`);
   process.exit(0);
 }

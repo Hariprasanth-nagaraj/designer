@@ -73,7 +73,7 @@ if (compareTo) {
 const run = {
   id: briefFile.replace(/\.md$/, ""),
   started: new Date().toISOString(),
-  system: flag("system", "ai-product-design v1.0"),
+  system: flag("system", "designer v1.0"),
   model: flag("model", "(record the model id)"),
   brief: briefFile,
   outDir,

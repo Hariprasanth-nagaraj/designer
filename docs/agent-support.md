@@ -6,9 +6,9 @@ client. This file separates what is *tested* from what is merely *documented*.
 
 | Agent | Adapter | Skill discovery | Slash command | MCP | Status |
 |---|---|---|---|---|---|
-| pi | `adapters/pi/` | native, user skill dir | `/skill:ai-product-design` | `mcp.json` | **primary** |
+| pi | `adapters/pi/` | native, user skill dir | `/skill:designer` | `mcp.json` | **primary** |
 | Codex | `adapters/codex/` | manual bridge (native path unverified) | none | TOML | documented, **verify** |
-| Claude Code | `adapters/claude-code/` | `~/.agents/skills` | `/ai-product-design` | own config | documented, **verify** |
+| Claude Code | `adapters/claude-code/` | `~/.agents/skills` | `/designer` | own config | documented, **verify** |
 | Cursor, Aider, Cline, others | `adapters/generic/` | manual bridge | none | per client | **works by construction** |
 
 ## The one thing that matters for any agent
@@ -20,7 +20,7 @@ assumption, and no dependency on another user's skill collection.
 So any agent that can read a file and run a command can use it:
 
 ```
-Read <absolute-path>/ai-product-design/SKILL.md and follow it for this task.
+Read <absolute-path>/designer/SKILL.md and follow it for this task.
 Task: <your product-UI brief>.
 ```
 

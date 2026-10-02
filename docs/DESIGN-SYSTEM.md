@@ -1,4 +1,4 @@
-# AI Product Design System — operating doc
+# Designer — operating doc
 
 This is the **capability rationale**: what the workflow covers and *why each piece is
 the way it is*. For installation and agent wiring, read `installation.md` and
@@ -47,7 +47,7 @@ retrieval library, never loaded wholesale.
 | Page architecture / composition | `baoyu-design/built-in-skills/hi-fi-design.md`, `page-designer` (reference) | ✅ |
 | Interaction design | `persuasive-ux`, `ux-heuristics-review`, `craft` | ✅ |
 | Reference retrieval | `scripts/pick-references.mjs` → bundled `data/brand-systems` (74) + `data/style-archetypes` (67); optional `ui-ux-pro-max/products.csv` for Layer A | ⬜ |
-| Design direction (Design Director) | `ai-product-design/references/design-director.md` | ⬜ |
+| Design direction (Design Director) | `designer/references/design-director.md` | ⬜ |
 | Design-system creation | `baoyu-design` authoring guide + `compile-design-system.mjs`; `ui-ux-pro-max --persist`; local `design-system` skill | ✅ |
 | Design-system consumption | `baoyu-design/use-design-system.md` (binding `_ds_prompt.md`); project's own `DESIGN.md` | ✅ |
 | Typography | `ui-ux-pro-max --domain typography`; `design-grammar.md` §2; local `design-system` | ✅ |
@@ -69,7 +69,7 @@ retrieval library, never loaded wholesale.
 | Deterministic UI audit | `scripts/design-audit.mjs` (vendored, MIT) | ✅ |
 | Design evals / taste | `scripts/record.mjs` + personal store outside the checkout | ⬜ |
 | Benchmarks | `evals/benchmarks/` (6 fixed briefs) + `run-benchmark.mjs` | ⬜ |
-| Orchestration / tiering | `ai-product-design/SKILL.md` §0 | ⬜ |
+| Orchestration / tiering | `designer/SKILL.md` §0 | ⬜ |
 | Human art direction | *(deferred — Onlook / Design Mode, spec Phase 7)* | ⬜ |
 
 **Nine custom pieces, each closing a gap nothing upstream closes.** Everything else is reuse.
@@ -105,7 +105,7 @@ retrieval library, never loaded wholesale.
     └── uipm-stack/              design-audit + design-review source
 
 ~/.pi/agent/skills/
-├── ai-product-design/       ◀ THE ENTRY POINT
+├── designer/       ◀ THE ENTRY POINT
 │   ├── SKILL.md                     tier router + workflow
 │   └── references/
 │       ├── design-director.md       the hypothesis layer
@@ -150,13 +150,13 @@ The icon in this button is 1px off.
 ### Explicitly
 
 ```
-Run the ai-product-design workflow, tier 4, for a new bullion trading console.
+Run the designer workflow, tier 4, for a new bullion trading console.
 ```
 
 ### The deterministic passes on any project
 
 ```bash
-PKG=/path/to/ai-product-design   # the directory containing SKILL.md
+PKG=/path/to/designer   # the directory containing SKILL.md
 
 # lock the project's allowlists from its own tokens (once)
 node $PKG/scripts/design-drift.mjs /path/to/project --init
@@ -202,8 +202,8 @@ the evidence, review findings and the negative-control result for the drift chec
 ### Codex
 
 Codex does not auto-discover pi skills. Point it at the same files — copy
-`ai-product-design/SKILL.md`'s tier table into the project's `AGENTS.md`, or run
-Codex with `--add-dir ~/.pi/agent/skills/ai-product-design`. The vendored upstream and
+`designer/SKILL.md`'s tier table into the project's `AGENTS.md`, or run
+Codex with `--add-dir ~/.pi/agent/skills/designer`. The vendored upstream and
 the scripts work identically under Codex (Node + Python only).
 
 ---
@@ -213,7 +213,7 @@ the scripts work identically under Codex (Node + Python only).
 ```
 BRIEF
   │
-  ├─ ai-product-design §0            decide the TIER, out loud, then stop loading
+  ├─ designer §0            decide the TIER, out loud, then stop loading
   │
   ├─ §1 DISCOVERY                    AGENTS.md · DESIGN.md · tokens · components
   │                                  + design-drift (what already drifts)

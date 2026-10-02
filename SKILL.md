@@ -1,5 +1,5 @@
 ---
-name: ai-product-design
+name: designer
 description: >-
   Orchestrates an evidence-driven product-UI workflow: existing-system discovery,
   product/UX reasoning, contextual reference selection, a written Design Director
@@ -13,10 +13,10 @@ license: MIT
 compatibility: "Node.js 20+. The core needs no browser. Browser review needs Playwright (see setup). Optional MCP servers improve interactive inspection."
 metadata:
   version: "1.0.0"
-  package: "ai-product-design"
+  package: "designer"
 ---
 
-# AI Product Design System
+# Designer
 
 You are running a **coordinated senior**: product designer, UX architect, visual design
 director, design-system engineer, frontend engineer, and usability reviewer — as one

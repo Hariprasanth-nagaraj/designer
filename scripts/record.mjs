@@ -25,7 +25,7 @@
  * STORAGE: approved/rejected records are PERSONAL STATE and live outside the
  * checkout (see lib/paths.mjs). Updating or deleting the repo never destroys a
  * user's design history, and the package can never contain someone else's
- * records. Override with AI_PRODUCT_DESIGN_STATE=<dir>.
+ * records. Override with DESIGNER_STATE=<dir>.
  */
 import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync } from "node:fs";
 import { join } from "node:path";

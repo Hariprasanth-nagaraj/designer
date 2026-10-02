@@ -13,8 +13,8 @@
 ## Install
 
 ```bash
-git clone https://github.com/<owner>/ai-product-design.git
-cd ai-product-design
+git clone https://github.com/<owner>/designer.git
+cd designer
 git checkout v1.0.0        # pin a release, not a moving branch
 
 npm ci                     # installs the pinned devDependency tree
@@ -100,10 +100,10 @@ copy the resulting Playwright browser cache (`~/.cache/ms-playwright` on Linux/m
 
 | Variable | Purpose |
 |---|---|
-| `AI_PRODUCT_DESIGN_STATE` | where personal eval records and receipts live |
-| `AI_PRODUCT_DESIGN_ROOT` | override the package root if you relocated it |
-| `AI_PRODUCT_DESIGN_UIPM` | path to an `ui-ux-pro-max` install |
-| `AI_PRODUCT_DESIGN_BAOYU` | path to a `baoyu-design` install |
+| `DESIGNER_STATE` | where personal eval records and receipts live |
+| `DESIGNER_ROOT` | override the package root if you relocated it |
+| `DESIGNER_UIPM` | path to an `ui-ux-pro-max` install |
+| `DESIGNER_BAOYU` | path to a `baoyu-design` install |
 
 ## Troubleshooting
 

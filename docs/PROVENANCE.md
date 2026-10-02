@@ -57,7 +57,7 @@ except where noted under "Adaptations".
     `playwright` dependency is resolved from the system install instead of a local
     `node_modules` (see `~/.design-system/scripts/design-audit.mjs` header).
   - `design-review.md` is **ported**, not copied, into the
-    `ai-product-design` skill: `mcp__playwright__*` / `mcp__chrome-devtools__*`
+    `designer` skill: `mcp__playwright__*` / `mcp__chrome-devtools__*`
     tool names are replaced with the pi equivalents, and the Claude-Code-specific
     `model: sonnet` / subagent invocation is dropped.
   - `README.md` / `CLAUDE.md` are kept for provenance only; the operative workflow
@@ -107,7 +107,7 @@ except where noted under "Adaptations".
 - Inspected and rejected as an install target: its bundled `ui-ux-pro-max` is a
   ~12 KB prose rewrite, strictly worse than the 3.7 MB searchable install we already
   have. Its one useful idea — an `AGENTS.md` trigger table with lazy skill loading —
-  is implemented in `ai-product-design/SKILL.md` as the tier table.
+  is implemented in `designer/SKILL.md` as the tier table.
 
 ---
 

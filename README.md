@@ -1,4 +1,4 @@
-# ai-product-design
+# Designer
 
 An **evidence-driven product-UI design workflow for coding agents**.
 
@@ -45,8 +45,8 @@ Three failure modes this package is built against:
 ## Install
 
 ```bash
-git clone https://github.com/<owner>/ai-product-design.git
-cd ai-product-design
+git clone https://github.com/Hari-prasanth-nagaraj/designer.git
+cd designer
 
 npm ci                                    # declared dependencies (Playwright, pinned)
 node scripts/setup.mjs --profile browser  # dry run — prints the plan
@@ -77,7 +77,7 @@ capability the doctor could not verify.**
 In pi:
 
 ```text
-/skill:ai-product-design Design an approval workflow screen for finance operators.
+/skill:designer Design an approval workflow screen for finance operators.
 ```
 
 Or just describe the work — the skill's description routes product-UI requests to it:
@@ -89,7 +89,7 @@ This settings page feels generic. Make it better.
 In any other file-capable agent (Cursor, Aider, Codex, Cline, …):
 
 ```
-Read <path>/ai-product-design/SKILL.md and follow it for this task.
+Read <path>/designer/SKILL.md and follow it for this task.
 Task: <your product-UI brief>.
 ```
 

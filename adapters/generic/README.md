@@ -9,7 +9,7 @@ registration, so it cannot break when a client changes its skill format.
 ## The one-line bridge
 
 ```
-Read <ABSOLUTE_PATH>/ai-product-design/SKILL.md and follow the ai-product-design
+Read <ABSOLUTE_PATH>/designer/SKILL.md and follow the designer
 workflow for this task. Resolve its supporting files relative to that directory.
 Task: <your product-UI brief>.
 ```
@@ -29,7 +29,7 @@ agent reads) so every future session in that repo uses the workflow. Keep it a
 For any request to design, build, change, or review an interface, screen,
 component, workflow, or design system:
 
-1. Read `<ABSOLUTE_PATH>/ai-product-design/SKILL.md` and follow it.
+1. Read `<ABSOLUTE_PATH>/designer/SKILL.md` and follow it.
 2. Resolve its references, scripts and data relative to that directory.
 3. This repo's own `DESIGN.md`, tokens and components always win over the
    package defaults — it extends, never replaces, your system.

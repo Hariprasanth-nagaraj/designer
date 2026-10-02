@@ -22,9 +22,9 @@ copy the whole methodology into it, or it will drift from `SKILL.md`:
 ## Product UI work
 
 When asked to design, build, change, or review any interface, screen, component,
-workflow, or design system, first read the AI Product Design workflow and follow it:
+workflow, or design system, first read the Designer workflow and follow it:
 
-    <ABSOLUTE_PATH>/ai-product-design/SKILL.md
+    <ABSOLUTE_PATH>/designer/SKILL.md
 
 Resolve its supporting files relative to that directory. It includes a task tier
 router, a Design Director step, a coupled design grammar, contextual reference
@@ -42,7 +42,7 @@ Your own repo's tokens, components and DESIGN.md always win over this package.
 Then in a session:
 
 ```text
-Read <ABSOLUTE_PATH>/ai-product-design/SKILL.md and follow it for this task:
+Read <ABSOLUTE_PATH>/designer/SKILL.md and follow it for this task:
 Design an approval workflow screen for finance operators.
 ```
 
@@ -58,7 +58,7 @@ package there:
 node scripts/install-agent.mjs --agent codex --scope user --apply
 ```
 
-This targets `~/.agents/skills/ai-product-design`, which is the shared
+This targets `~/.agents/skills/designer`, which is the shared
 Agent Skills-spec location. Then confirm Codex actually discovers it — do not
 assume the file placement was enough.
 

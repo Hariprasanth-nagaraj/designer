@@ -1,5 +1,5 @@
 {
-  "name": "ai-product-design",
+  "name": "designer",
   "version": "1.0.0",
   "description": "An evidence-driven product-UI design workflow for coding agents: tier router, Design Director, coupled design grammar, contextual reference selection, static drift checking, browser review and user-flow testing. Not an application, framework or component library.",
   "license": "MIT",
@@ -34,15 +34,15 @@
     "README.md"
   ],
   "bin": {
-    "apd-doctor": "./scripts/doctor.mjs",
-    "apd-setup": "./scripts/setup.mjs",
-    "apd-install-agent": "./scripts/install-agent.mjs",
-    "apd-uninstall-agent": "./scripts/uninstall-agent.mjs",
-    "apd-pick-references": "./scripts/pick-references.mjs",
-    "apd-record": "./scripts/record.mjs",
-    "apd-design-drift": "./scripts/design-drift.mjs",
-    "apd-design-audit": "./scripts/design-audit.mjs",
-    "apd-benchmark": "./benchmarks/run-benchmark.mjs"
+    "designer-doctor": "./scripts/doctor.mjs",
+    "designer-setup": "./scripts/setup.mjs",
+    "designer-install-agent": "./scripts/install-agent.mjs",
+    "designer-uninstall-agent": "./scripts/uninstall-agent.mjs",
+    "designer-pick-references": "./scripts/pick-references.mjs",
+    "designer-record": "./scripts/record.mjs",
+    "designer-design-drift": "./scripts/design-drift.mjs",
+    "designer-design-audit": "./scripts/design-audit.mjs",
+    "designer-benchmark": "./benchmarks/run-benchmark.mjs"
   },
   "pi": {
     "skills": [

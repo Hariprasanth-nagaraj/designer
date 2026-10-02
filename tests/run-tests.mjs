@@ -15,7 +15,7 @@ import { tmpdir } from "node:os";
 import { spawnSync } from "node:child_process";
 import { paths, displayPath } from "../lib/paths.mjs";
 
-const SANDBOX = mkdtempSync(join(tmpdir(), "apd-test-"));
+const SANDBOX = mkdtempSync(join(tmpdir(), "designer-test-"));
 const CLEAN = () => { try { rmSync(SANDBOX, { recursive: true, force: true }); } catch {} };
 process.on("exit", CLEAN);
 
@@ -57,13 +57,13 @@ function probePathsModule(code, env = {}) {
   return { stdout: r.stdout.trim(), stderr: r.stderr, status: r.status };
 }
 
-console.log("\nai-product-design — test suite");
+console.log("\ndesigner — test suite");
 console.log(`sandbox: ${displayPath(SANDBOX)}\n`);
 
 // ---------------------------------------------------------------- packaging
 it("PACKAGING","package.json is valid and declares MIT + engines", () => {
   const p = JSON.parse(readFileSync(join(paths.packageRoot, "package.json"), "utf8"));
-  assert(p.name === "ai-product-design", "wrong name");
+  assert(p.name === "designer", "wrong name");
   assert(p.license === "MIT", "license must be MIT");
   assert(p.engines?.node?.includes("20"), "must declare Node >=20");
   assert(p.files?.includes("SKILL.md"), "must ship SKILL.md");
@@ -117,11 +117,11 @@ it("PORTABILITY","paths.mjs resolves the package from its own location, not cwd"
 });
 it("PORTABILITY","state directory resolves outside the checkout", () => {
   const r = probePathsModule('m.paths.evals.startsWith(m.PACKAGE_ROOT) ? "INSIDE" : "OUTSIDE"',
-    { AI_PRODUCT_DESIGN_STATE: join(SANDBOX, "state") });
+    { DESIGNER_STATE: join(SANDBOX, "state") });
   assert(r.stdout === "OUTSIDE", `state must resolve outside package root, got "${r.stdout}" ${r.stderr?.slice(0, 160)}`);
 });
 it("PORTABILITY","an explicit state override is honoured", () => {
-  const r = probePathsModule('m.paths.evals', { AI_PRODUCT_DESIGN_STATE: join(SANDBOX, "explicit") });
+  const r = probePathsModule('m.paths.evals', { DESIGNER_STATE: join(SANDBOX, "explicit") });
   assert(r.stdout.endsWith("explicit/evals") || r.stdout.endsWith("explicit\\evals"),
     `override ignored: "${r.stdout}"`);
 });
@@ -150,7 +150,7 @@ it("REFERENCE SELECTION","Layer B returns references for a real query", () => {
   assert(out.layerB.length > 0, "expected at least one reference");
 });
 it("REFERENCE SELECTION","Layer A degrades honestly when the optional pack is absent", () => {
-  const r = run(join(paths.scripts, "pick-references.mjs"), ["anything", "--json"], { AI_PRODUCT_DESIGN_UIPM: join(SANDBOX, "nope") });
+  const r = run(join(paths.scripts, "pick-references.mjs"), ["anything", "--json"], { DESIGNER_UIPM: join(SANDBOX, "nope") });
   const out = JSON.parse(r.stdout);
   // Either the pack is genuinely absent (honest unavailable) OR it is present with a reason.
   assert(out.layerAStatus && typeof out.layerAStatus.present === "boolean", "missing layerAStatus");
@@ -186,14 +186,14 @@ it("DRIFT CHECKER","--init writes a config derived from the project's own tokens
 console.log("\nEVAL STORE");
 it("EVAL STORE","approve writes to sandboxed state, not the checkout", () => {
   const state = join(SANDBOX, "state");
-  const r = run(join(paths.scripts, "record.mjs"), ["approve", "--project", "t", "--tier", "1", "--hypothesis", "h"], { AI_PRODUCT_DESIGN_STATE: state });
+  const r = run(join(paths.scripts, "record.mjs"), ["approve", "--project", "t", "--tier", "1", "--hypothesis", "h"], { DESIGNER_STATE: state });
   assert(r.status === 0, `record failed: ${r.stderr?.slice(0, 120)}`);
   assert(existsSync(join(state, "evals", "approved")), "record did not land in state");
   assert(!existsSync(join(paths.packageRoot, "approved")), "records leaked into the checkout");
 });
 it("EVAL STORE","retrieve finds a stored preference", () => {
   const state = join(SANDBOX, "state");
-  const r = run(join(paths.scripts, "record.mjs"), ["retrieve", "consoles"], { AI_PRODUCT_DESIGN_STATE: state });
+  const r = run(join(paths.scripts, "record.mjs"), ["retrieve", "consoles"], { DESIGNER_STATE: state });
   assert(r.status === 0, "retrieve failed");
 });
 
@@ -206,11 +206,11 @@ it("AGENT ADAPTERS","every advertised adapter has a README", () => {
 it("AGENT ADAPTERS","install-agent refuses to clobber a foreign skill (dry-run safety)", () => {
   // Point HOME at a sandbox that already has an unrelated skill dir.
   const home = join(SANDBOX, "fakehome");
-  mkdirSync(join(home, ".pi", "agent", "skills", "ai-product-design"), { recursive: true });
-  writeFileSync(join(home, ".pi", "agent", "skills", "ai-product-design", "SKILL.md"), "# foreign skill\n");
-  const r = run(join(paths.scripts, "install-agent.mjs"), ["--agent", "pi", "--apply"], { HOME: home, USERPROFILE: home, AI_PRODUCT_DESIGN_STATE: join(home, "state") });
+  mkdirSync(join(home, ".pi", "agent", "skills", "designer"), { recursive: true });
+  writeFileSync(join(home, ".pi", "agent", "skills", "designer", "SKILL.md"), "# foreign skill\n");
+  const r = run(join(paths.scripts, "install-agent.mjs"), ["--agent", "pi", "--apply"], { HOME: home, USERPROFILE: home, DESIGNER_STATE: join(home, "state") });
   assert(r.status === 3, `expected conflict exit 3, got ${r.status} — must not silently overwrite`);
-  assert(readFileSync(join(home, ".pi", "agent", "skills", "ai-product-design", "SKILL.md"), "utf8").includes("foreign"), "foreign skill was overwritten!");
+  assert(readFileSync(join(home, ".pi", "agent", "skills", "designer", "SKILL.md"), "utf8").includes("foreign"), "foreign skill was overwritten!");
 });
 it("AGENT ADAPTERS","doctor runs and reports a graded verdict", () => {
   const r = run(join(paths.scripts, "doctor.mjs"), ["--profile", "core", "--json"]);

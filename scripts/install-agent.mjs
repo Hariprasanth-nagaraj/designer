@@ -31,7 +31,7 @@ const AGENT = flag("agent", "pi");
 const SCOPE = flag("scope", "user");
 const MODE = flag("mode", "link");
 
-const SKILL_NAME = "ai-product-design";
+const SKILL_NAME = "designer";
 
 /** Where each agent looks for user-level skills. Verified per agent at install time. */
 function userSkillDir(agent) {
@@ -213,5 +213,5 @@ if (outcome.length) {
 console.log(`\nInstalled. Now verify it:\n`);
 console.log(`  node ${displayPath(join(paths.scripts, "doctor.mjs"))} --agent ${AGENT}`);
 console.log(`\nThen restart or reload the agent, and confirm the skill loads:`);
-console.log(AGENT === "pi" ? "  /skill:ai-product-design  <your product-UI brief>" : `  follow ${displayPath(join(paths.adapters, AGENT, "README.md"))}`);
+console.log(AGENT === "pi" ? "  /skill:designer  <your product-UI brief>" : `  follow ${displayPath(join(paths.adapters, AGENT, "README.md"))}`);
 console.log();

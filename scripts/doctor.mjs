@@ -34,7 +34,7 @@ const profile = flag("profile", "full");
 const agentFilter = flag("agent", null);
 
 // Collect a state sandbox so probing never pollutes the user's real eval store.
-const SANDBOX = mkdtempSync(join(tmpdir(), "apd-doctor-"));
+const SANDBOX = mkdtempSync(join(tmpdir(), "designer-doctor-"));
 const CLEANUP = () => { try { rmSync(SANDBOX, { recursive: true, force: true }); } catch {} };
 process.on("exit", CLEANUP);
 
@@ -124,7 +124,7 @@ for (const [name, lic, asset] of LICENSE_EXPECT) {
 // Probe the eval store against a SANDBOX state dir, proving writes never touch the checkout.
 {
   const before = existsSync(join(paths.packageRoot, "approved"));
-  const env = { ...process.env, AI_PRODUCT_DESIGN_STATE: SANDBOX };
+  const env = { ...process.env, DESIGNER_STATE: SANDBOX };
   const r = spawnSync(process.execPath, [join(paths.scripts, "record.mjs"), "approve", "--project", "doctor-probe", "--tier", "1", "--hypothesis", "probe"], { encoding: "utf8", env, timeout: 30000 });
   if (r.status === 0 && existsSync(join(SANDBOX, "evals", "approved"))) {
     record("executable", "PASS", "eval store", "writes succeed and land in the state dir, not the checkout");
@@ -196,9 +196,9 @@ for (const [key, def] of Object.entries(AGENTS)) {
   record("agent", "PASS", `${def.label} adapter`, `present at ${displayPath(def.adapter)}`);
   if (def.skillDirs) {
     const installed = def.skillDirs.some((d) => {
-      try { return readdirSync(d).some((f) => f === "ai-product-design"); } catch { return false; }
+      try { return readdirSync(d).some((f) => f === "designer"); } catch { return false; }
     });
-    if (installed) record("agent", "PASS", `${def.label} registration`, "ai-product-design is discoverable in a user skill directory");
+    if (installed) record("agent", "PASS", `${def.label} registration`, "designer is discoverable in a user skill directory");
     else record("agent", "PARTIAL", `${def.label} registration`, "not registered. Run: node scripts/install-agent.mjs --agent " + key + " --scope user");
   } else {
     record("agent", "PARTIAL", `${def.label} registration`, def.needsRegistration
@@ -245,7 +245,7 @@ if (json) {
 }
 
 const ICON = { PASS: "✓", PARTIAL: "!", FAIL: "✗" };
-console.log("\nAI Product Design — readiness\n" + "=".repeat(60));
+console.log("\nDesigner — readiness\n" + "=".repeat(60));
 console.log(`package: ${displayPath(paths.packageRoot)}`);
 console.log(`state:   ${displayPath(paths.stateRoot)}`);
 console.log(`profile: ${profile}\n`);

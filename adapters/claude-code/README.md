@@ -20,7 +20,7 @@ there or use the manual bridge below.
 ## Use it
 
 ```
-/ai-product-design Design a claims triage screen for a medical billing team.
+/designer Design a claims triage screen for a medical billing team.
 ```
 
 Or describe the UI task normally and let the description route to it.

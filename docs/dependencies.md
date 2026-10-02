@@ -66,12 +66,12 @@ Or set paths directly:
 
 ```bash
 # Linux / macOS
-export AI_PRODUCT_DESIGN_UIPM=/path/to/ui-ux-pro-max
-export AI_PRODUCT_DESIGN_BAOYU=/path/to/baoyu-design
+export DESIGNER_UIPM=/path/to/ui-ux-pro-max
+export DESIGNER_BAOYU=/path/to/baoyu-design
 
 # Windows PowerShell
-$env:AI_PRODUCT_DESIGN_UIPM = "D:\path\to\ui-ux-pro-max"
-$env:AI_PRODUCT_DESIGN_BAOYU = "D:\path\to\baoyu-design"
+$env:DESIGNER_UIPM = "D:\path\to\ui-ux-pro-max"
+$env:DESIGNER_BAOYU = "D:\path\to\baoyu-design"
 ```
 
 The package also finds them in common agent skill directories — `~/.agents/skills`,

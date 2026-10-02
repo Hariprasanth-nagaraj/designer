@@ -13,8 +13,8 @@ node scripts/doctor.mjs --agent pi --profile browser
 
 This registers the skill in your user skill directory:
 
-- Windows: `%USERPROFILE%\.pi\agent\skills\ai-product-design`
-- macOS / Linux: `~/.config/pi/agent/skills/ai-product-design`
+- Windows: `%USERPROFILE%\.pi\agent\skills\designer`
+- macOS / Linux: `~/.config/pi/agent/skills/designer`
 
 Then **restart pi or run `/reload`**.
 
@@ -23,7 +23,7 @@ Then **restart pi or run `/reload`**.
 If you prefer pi to own the install rather than copying/symlinking:
 
 ```bash
-pi install git:github.com/<owner>/ai-product-design@v1.0.0
+pi install git:github.com/<owner>/designer@v1.0.0
 pi list          # confirm it registered
 ```
 
@@ -39,7 +39,7 @@ include skills that instruct the model to run programs.
 For a one-off trial without registering anything:
 
 ```bash
-pi --skill /path/to/ai-product-design -- "Design a clinic scheduling screen."
+pi --skill /path/to/designer -- "Design a clinic scheduling screen."
 ```
 
 ## Use it
@@ -47,7 +47,7 @@ pi --skill /path/to/ai-product-design -- "Design a clinic scheduling screen."
 Explicit and guaranteed:
 
 ```text
-/skill:ai-product-design Design a billing approval workflow for finance operators.
+/skill:designer Design a billing approval workflow for finance operators.
 ```
 
 Or automatically — just describe the UI task. The skill's description is designed
