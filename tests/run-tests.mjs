@@ -97,9 +97,12 @@ it("PORTABILITY","no absolute user paths in shipped logic", () => {
       .map((f) => join("scripts", f)),
     ...["design-director.md", "design-grammar.md", "design-review.md", "DESIGN.md-template.md"].map((f) => join("references", f))];
   const offenders = [];
+  // Generic: ANY per-user absolute path, not one hardcoded name. A check that only
+  // catches the original author's username would pass on everyone else's machine.
+  const userPath = /(?:[A-Za-z]:\\Users\\[^\\\s"']+)|(?:\/Users\/[^/\s"']+\/)|(?:\/home\/[^/\s"']+\/)|%USERPROFILE%/;
   for (const f of files) {
     const txt = readFileSync(join(paths.packageRoot, f), "utf8");
-    if (/harip|[A-Z]:\\Users\\/i.test(txt)) offenders.push(f);
+    if (userPath.test(txt)) offenders.push(f);
   }
   assert(offenders.length === 0, `absolute user path in: ${offenders.join(", ")}`);
 });
