@@ -1,0 +1,9 @@
+/* Fixture: DELIBERATELY off-system. The drift checker must catch every line below.
+   This is the negative control that proves the checker is not silently passing. */
+.rogue-colour      { color: #ff00aa; }
+.rogue-radius      { border-radius: 13px; }
+.rogue-spacing     { padding: 7px; gap: 56px; }
+.rogue-type        { font-size: 15.5px; }
+.rogue-shadow      { box-shadow: 0 4px 11px rgba(0, 0, 0, 0.4); }
+.rogue-shadow2     { box-shadow: 0 2px 6px oklch(0 0 0 / 0.3); }
+.rogue-transition  { transition: all 300ms ease; }

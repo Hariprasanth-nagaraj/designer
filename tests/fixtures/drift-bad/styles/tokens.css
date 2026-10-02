@@ -1,0 +1,12 @@
+/* FIXTURE — negative control token layer. Deliberately kept small so the
+   off-system values in app.css have nowhere legitimate to come from. */
+:root {
+  --canvas:         oklch(0.16 0.008 250);
+  --surface:        oklch(0.196 0.009 250);
+  --text-primary:   oklch(0.96 0.002 250);
+  --data-positive:  oklch(0.80 0.15 155);
+  --space-cell-x:   10px;
+  --radius-badge:   2px;
+  --radius-control: 4px;
+  --elevation-pop:  0 8px 24px oklch(0 0 0 / 0.4);
+}

@@ -1,0 +1,39 @@
+# dependencies — never committed; declared in package-lock.json
+node_modules/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# playwright browser downloads live outside the repo by default, but be explicit
+.playwright/
+test-results/
+playwright-report/
+
+# audit and review output from running the tools against your own projects
+audit/
+audit-output/
+audit-*/
+*-audit/
+flow/
+screenshots/
+
+# personal eval state must never be committed, even if someone sets
+# AI_PRODUCT_DESIGN_STATE to a path inside the checkout
+approved/
+rejected/
+evals/approved/
+evals/rejected/
+
+# benchmark run output
+runs/
+benchmarks/runs/
+*-scorecard.md
+
+# secrets
+.env
+.env.*
+*.pem

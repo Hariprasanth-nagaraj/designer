@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "package": "ai-product-design",
+  "version": "1.0.0",
+  "note": "Hashes let a reviewer confirm the exact logic shipped. Third-party data is captured by count+bytes; re-verify with git clone --depth 1 <source> && diff -r",
+  "authored": {
+    "SKILL.md": "5ed9e89d0e85c0eb",
+    "benchmarks/01-fintech-trading-console.md": "eb11e3e18d7a99c2",
+    "benchmarks/02-clinic-scheduling.md": "88a43233903ccfe8",
+    "benchmarks/03-b2b-crm.md": "e6b97811cbbc7335",
+    "benchmarks/04-developer-tool.md": "01aab5100a30aed2",
+    "benchmarks/05-knowledge-research.md": "01da73d01cf5c3b2",
+    "benchmarks/06-smb-operations.md": "bad691d5e9225726",
+    "benchmarks/run-benchmark.mjs": "c99718c09dd7ee0c",
+    "lib/paths.mjs": "66191f1abbb22c41",
+    "references/DESIGN.md-template.md": "3c6f302d39b70f98",
+    "references/design-director.md": "5b99eabf3580372c",
+    "references/design-grammar.md": "517daa34fa6944a1",
+    "references/design-review.md": "f1e1a1e28039e33f",
+    "scripts/build-reference-index.mjs": "149ee3bf511db8b6",
+    "scripts/design-audit.mjs": "70621fd1962486fe",
+    "scripts/design-drift.mjs": "4253fdfac7b2481b",
+    "scripts/doctor.mjs": "d4dd799600bb048f",
+    "scripts/install-agent.mjs": "6770bb0ae626ecb1",
+    "scripts/pick-references.mjs": "65f30b42bf62348a",
+    "scripts/record.mjs": "cc33d596d2c6271d",
+    "scripts/setup.mjs": "1d5ca7edfc35f01c",
+    "scripts/uninstall-agent.mjs": "d2ae1ddaca434494"
+  },
+  "bundledData": {
+    "brand-systems": {
+      "files": 147,
+      "bytes": 2206160
+    },
+    "style-archetypes": {
+      "files": 136,
+      "bytes": 384278
+    },
+    "ux-pipeline-skills": {
+      "files": 15,
+      "bytes": 225946
+    }
+  },
+  "generated": [
+    "data/reference-index.json"
+  ],
+  "runtimeDependencies": {
+    "playwright": "1.63.0"
+  },
+  "externalPacksNotBundled": [
+    {
+      "name": "ui-ux-pro-max",
+      "reason": "no LICENSE file in installed copy",
+      "provides": "Layer A product-type intelligence"
+    },
+    {
+      "name": "baoyu-design",
+      "reason": "no LICENSE file in installed copy",
+      "provides": "craft methodology + design-system authoring"
+    }
+  ]
+}

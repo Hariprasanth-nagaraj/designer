@@ -1,0 +1,54 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # The core must run with ZERO installed packages. If this needs an install
+      # to pass, the core has stopped being portable.
+      - name: core tests (no install)
+        run: node tests/run-tests.mjs
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: doctor (core)
+        run: node scripts/doctor.mjs --profile core
+
+      - name: install chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: doctor (browser — proves a real browser launches)
+        run: node scripts/doctor.mjs --profile browser
+
+  determinism:
+    name: reference index is deterministic
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      # Two builds from unchanged data must be byte-identical, or a reviewer
+      # cannot tell a real content change from build noise.
+      - name: build twice and compare
+        run: |
+          node scripts/build-reference-index.mjs
+          cp data/reference-index.json /tmp/first.json
+          node scripts/build-reference-index.mjs
+          diff /tmp/first.json data/reference-index.json && echo "deterministic ✓"

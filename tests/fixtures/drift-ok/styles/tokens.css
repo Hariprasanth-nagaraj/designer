@@ -1,0 +1,35 @@
+/* FIXTURE — clean project. A well-formed token layer.
+ *
+ * Contract this fixture demonstrates:
+ *   - spacing steps are declared as --space-* tokens, which --init derives
+ *   - radii are declared as --radius* tokens
+ *   - components CONSUME tokens; only scale-valid literals may appear inline
+ */
+:root {
+  /* surface + colour roles */
+  --canvas:        oklch(0.16 0.008 250);
+  --surface:       oklch(0.196 0.009 250);
+  --surface-subtle:oklch(0.226 0.010 250);
+  --text-primary:  oklch(0.96 0.002 250);
+  --text-secondary:oklch(0.76 0.008 250);
+  --border-subtle: oklch(0.29 0.010 250);
+  --accent:        oklch(0.78 0.13 220);
+  --overlay-scrim: oklch(0 0 0 / 0.62);
+
+  /* spacing scale: every step used anywhere in the project must appear here */
+  --space-label-helper: 4px;
+  --space-icon-label:   6px;
+  --space-cell-x:      10px;
+  --space-group:       12px;
+  --space-section:     16px;
+  --space-region:      24px;
+
+  /* radius family */
+  --radius-badge:   2px;
+  --radius-control: 4px;
+  --radius-dialog:  6px;
+
+  /* elevation: shadow is reserved for floating things only */
+  --elevation-pop:   0 8px 24px oklch(0 0 0 / 0.4);
+  --elevation-modal: 0 12px 40px oklch(0 0 0 / 0.45);
+}

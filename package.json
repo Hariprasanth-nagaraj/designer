@@ -1,0 +1,66 @@
+{
+  "name": "ai-product-design",
+  "version": "1.0.0",
+  "description": "An evidence-driven product-UI design workflow for coding agents: tier router, Design Director, coupled design grammar, contextual reference selection, static drift checking, browser review and user-flow testing. Not an application, framework or component library.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "ai-package",
+    "design-system",
+    "design-tokens",
+    "ux",
+    "accessibility",
+    "agent-skill",
+    "codex",
+    "claude-code",
+    "pi"
+  ],
+  "files": [
+    "SKILL.md",
+    "references/",
+    "scripts/",
+    "lib/",
+    "data/",
+    "benchmarks/",
+    "examples/",
+    "adapters/",
+    "docs/",
+    "licenses/",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "README.md"
+  ],
+  "bin": {
+    "apd-doctor": "./scripts/doctor.mjs",
+    "apd-setup": "./scripts/setup.mjs",
+    "apd-install-agent": "./scripts/install-agent.mjs",
+    "apd-uninstall-agent": "./scripts/uninstall-agent.mjs",
+    "apd-pick-references": "./scripts/pick-references.mjs",
+    "apd-record": "./scripts/record.mjs",
+    "apd-design-drift": "./scripts/design-drift.mjs",
+    "apd-design-audit": "./scripts/design-audit.mjs",
+    "apd-benchmark": "./benchmarks/run-benchmark.mjs"
+  },
+  "pi": {
+    "skills": [
+      "."
+    ]
+  },
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "doctor": "node scripts/doctor.mjs",
+    "build-index": "node scripts/build-reference-index.mjs",
+    "test": "node tests/run-tests.mjs"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "playwright": "1.63.0"
+  },
+  "optionalDependencies": {},
+  "publishConfig": {
+    "access": "public"
+  }
+}
