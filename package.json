@@ -1,5 +1,5 @@
 {
-  "name": "designer",
+  "name": "@hari-prasanth-nagaraj/designer",
   "version": "1.0.0",
   "description": "An evidence-driven product-UI design workflow for coding agents: tier router, Design Director, coupled design grammar, contextual reference selection, static drift checking, browser review and user-flow testing. Not an application, framework or component library.",
   "license": "MIT",
@@ -8,15 +8,19 @@
     "node": ">=20"
   },
   "keywords": [
-    "ai-package",
+    "design",
     "design-system",
     "design-tokens",
+    "ui",
     "ux",
     "accessibility",
     "agent-skill",
+    "ai",
     "codex",
     "claude-code",
-    "pi"
+    "cursor",
+    "pi",
+    "linter"
   ],
   "files": [
     "SKILL.md",
@@ -28,6 +32,7 @@
     "examples/",
     "adapters/",
     "docs/",
+    "tests/",
     "licenses/",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
@@ -61,6 +66,14 @@
   },
   "optionalDependencies": {},
   "publishConfig": {
-    "access": "public"
-  }
+    "access": "public",
+    "provenance": false
+  },
+  "enginesNote": "Core tools need zero dependencies. Browser features need Playwright, installed separately: npx playwright install chromium",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hariprasanth-nagaraj/designer.git"
+  },
+  "bugs": { "url": "https://github.com/Hariprasanth-nagaraj/designer/issues" },
+  "homepage": "https://github.com/Hariprasanth-nagaraj/designer#readme"
 }

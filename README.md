@@ -1,5 +1,70 @@
 # Designer
 
+**Stop designing by vibes. Check it instead.**
+
+Two things in one package:
+
+1. **A skill** — instructions that teach an AI agent how to make design decisions.
+2. **Tools** — plain CLI programs that check those decisions stayed consistent.
+
+The tools work on their own. You do not need an AI agent, a build step, or an account.
+
+```bash
+npm install -g @hari-prasanth-nagaraj/designer
+designer-doctor
+```
+
+That is the whole core install. Node 20+ and nothing else.
+
+---
+
+## Try it in 30 seconds
+
+```bash
+cd my-app
+designer-design-drift . --init    # learn your design system from your own tokens
+designer-design-drift .           # find where your UI has drifted
+```
+
+```
+✗ radius-drift — 12 findings across 4 files
+  Geometry has fragmented into per-component choices. Collapse to the declared
+  radius family and map component roles onto it.
+```
+
+One rollup line, because **200 radius findings is one bad decision, not 200 bugs.**
+
+More:
+
+```bash
+designer-pick-references "dental clinic scheduling"   # ranked design references
+designer-record approve --project x --why "…"         # remember decisions
+designer-design-audit --url http://localhost:3000     # audit a real page
+```
+
+Full guide: **[docs/INSTALL.md](docs/INSTALL.md)** · no agent needed.
+
+---
+
+## Using it with an AI agent
+
+The tools give an agent instruments. The skill gives it judgement. Full guide:
+**[docs/INSTALL.md](docs/INSTALL.md#using-it-with-an-ai-agent)**.
+
+```bash
+designer-install-agent --agent pi --apply
+```
+
+```text
+/skill:designer Design an approval workflow screen for finance operators.
+```
+
+Any other agent (Cursor, Codex, Claude Code, Aider…) needs no install — just point it at `SKILL.md`.
+
+---
+
+## What the skill part actually does
+
 An **evidence-driven product-UI design workflow for coding agents**.
 
 Not an application. Not a CSS framework. Not a component library. It is one portable
@@ -38,23 +103,21 @@ Three failure modes this package is built against:
 ## Requirements
 
 - **Node.js 20+** — the core needs nothing else.
-- A coding agent that can read files and run shell commands.
-- **Optional:** Playwright (browser audit + scripted flow tests), MCP browser servers
-  (interactive inspection).
+- A coding agent that can read files and run shell commands — **only** for the skill half.
 
 ## Install
 
 ```bash
+# tools only — no agent, no build step
+npm install -g @hari-prasanth-nagaraj/designer
+
+# or from source
 git clone https://github.com/Hari-prasanth-nagaraj/designer.git
 cd designer
 
-npm ci                                    # declared dependencies (Playwright, pinned)
-node scripts/setup.mjs --profile browser  # dry run — prints the plan
+# browser extras (optional)
 node scripts/setup.mjs --profile browser --apply
-
-node scripts/install-agent.mjs --agent pi       # dry run
-node scripts/install-agent.mjs --agent pi --apply
-
+node scripts/install-agent.mjs --agent pi --apply   # register the skill
 node scripts/doctor.mjs --profile browser
 ```
 
@@ -98,19 +161,22 @@ See `adapters/` for per-agent detail: **`pi`** (primary), `codex`, `claude-code`
 
 ## The tools
 
+Globally installed as `designer-*`; from source as `node scripts/*.mjs`.
+
 | Command | Purpose |
 |---|---|
-| `node scripts/design-drift.mjs <project>` | static design-lock enforcement. `--init` derives the allowlist from your own `--space-*` / `--radius*` tokens. |
-| `node scripts/design-audit.mjs --url <url>` | multi-viewport heuristic audit: overflow, focus, tap targets, accessible names, contrast, console |
-| `node scripts/pick-references.mjs "<query>"` | rank 141 bundled references by fit; reports coverage gaps instead of guessing |
-| `node scripts/record.mjs approve\|reject` | the taste layer — records what earned its place |
-| `node benchmarks/run-benchmark.mjs <id>` | run a fixed brief, score it on 12 dimensions |
+| `designer-doctor` | check what's working — start here |
+| `designer-design-drift <project>` | static design-lock enforcement. `--init` derives the allowlist from your own `--space-*` / `--radius*` tokens. |
+| `designer-design-audit --url <url>` | multi-viewport heuristic audit: overflow, focus, tap targets, accessible names, contrast, console |
+| `designer-pick-references "<query>"` | rank 141 bundled references by fit; reports coverage gaps instead of guessing |
+| `designer-record approve\|reject` | the taste layer — records what earned its place |
+| `designer-benchmark <id>` | run a fixed brief, score it on 12 dimensions |
 
 ### Drift checking is the part most systems skip
 
 ```bash
-node scripts/design-drift.mjs ./my-app --init   # once
-node scripts/design-drift.mjs ./my-app          # every change, and in CI
+designer-design-drift ./my-app --init   # once
+designer-design-drift ./my-app          # every change, and in CI
 ```
 
 It exits non-zero and prints a **systemic rollup** first: *200 radius findings is one
@@ -160,7 +226,7 @@ node scripts/record.mjs --where
 ## Uninstall
 
 ```bash
-node scripts/uninstall-agent.mjs --agent pi --apply
+npm uninstall -g @hari-prasanth-nagaraj/designer
 ```
 
 Removes only what the installer created, refuses to follow a symlink into your
@@ -170,7 +236,8 @@ checkout, keeps your eval records unless you pass `--purge-state`.
 
 | File | Covers |
 |---|---|
-| `docs/installation.md` | full install, platform prerequisites, offline use |
+| `docs/INSTALL.md` | **start here** — 2-minute install, with or without an agent |
+| `docs/installation.md` | detailed install, platform prerequisites, offline use |
 | `docs/dependencies.md` | every dependency, licence status, how to add the excluded packs |
 | `docs/agent-support.md` | support matrix — what is *tested* vs *documented* |
 | `docs/limitations.md` | what this package does not do |

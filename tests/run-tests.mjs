@@ -63,10 +63,31 @@ console.log(`sandbox: ${displayPath(SANDBOX)}\n`);
 // ---------------------------------------------------------------- packaging
 it("PACKAGING","package.json is valid and declares MIT + engines", () => {
   const p = JSON.parse(readFileSync(join(paths.packageRoot, "package.json"), "utf8"));
-  assert(p.name === "designer", "wrong name");
+  // Assert the invariant, not a literal: the name must be a publishable npm name
+  // that carries "designer", whether unscoped or scoped.
+  const scoped = /^@([^/]+)\/([^/]+)$/.exec(p.name);
+  const bare = /^([a-z0-9][a-z0-9._-]*)$/.exec(p.name);
+  assert(scoped || bare, `name "${p.name}" is not a valid npm package name`);
+  assert((scoped ? scoped[2] : bare[1]) === "designer", `name must end in "designer", got "${p.name}"`);
   assert(p.license === "MIT", "license must be MIT");
   assert(p.engines?.node?.includes("20"), "must declare Node >=20");
   assert(p.files?.includes("SKILL.md"), "must ship SKILL.md");
+  // The negative-control fixtures must travel, or an installed copy cannot
+  // prove its own drift checker still fails when it should.
+  assert(p.files?.includes("tests/"), "must ship tests/ (negative control)");
+});
+it("PACKAGING","every declared bin target exists and runs", () => {
+  const p = JSON.parse(readFileSync(join(paths.packageRoot, "package.json"), "utf8"));
+  for (const [bin, rel] of Object.entries(p.bin ?? {})) {
+    assert(existsSync(join(paths.packageRoot, rel)), `bin "${bin}" points at missing file ${rel}`);
+    assert(bin.startsWith("designer"), `bin "${bin}" should be prefixed with designer-`);
+  }
+  // syntax-check each script so a broken publish is caught before it ships
+  for (const rel of Object.values(p.bin ?? {})) {
+    if (!rel.endsWith(".mjs")) continue;
+    const r = spawnSync(process.execPath, ["--check", join(paths.packageRoot, rel)], { encoding: "utf8" });
+    assert(r.status === 0, `syntax error in ${rel}: ${(r.stderr ?? "").split("\n").slice(0, 2).join(" ")}`);
+  }
 });
 it("PACKAGING","authored LICENSE exists", () => {
   const l = readFileSync(join(paths.packageRoot, "LICENSE"), "utf8");

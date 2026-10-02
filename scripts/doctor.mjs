@@ -33,6 +33,21 @@ const json = argv.includes("--json");
 const profile = flag("profile", "full");
 const agentFilter = flag("agent", null);
 
+// `--where` answers "where is this on my machine?" without running any probes.
+// Useful when pointing another agent at SKILL.md.
+if (argv.includes("--where")) {
+  const skillFile = join(paths.packageRoot, "SKILL.md");
+  console.log("\nDesigner — locations\n");
+  console.log(`  package root : ${displayPath(paths.packageRoot)}`);
+  console.log(`  SKILL.md     : ${displayPath(skillFile)}`);
+  console.log(`  state root   : ${displayPath(paths.stateRoot)}`);
+  console.log(`  eval records : ${displayPath(paths.evals)}`);
+  console.log("\n  Paste this into any agent to use the workflow:\n");
+  console.log(`    Read ${displayPath(skillFile)} and follow it for this task.`);
+  console.log();
+  process.exit(0);
+}
+
 // Collect a state sandbox so probing never pollutes the user's real eval store.
 const SANDBOX = mkdtempSync(join(tmpdir(), "designer-doctor-"));
 const CLEANUP = () => { try { rmSync(SANDBOX, { recursive: true, force: true }); } catch {} };
