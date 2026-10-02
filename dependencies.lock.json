@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "package": "@hariprasanth-nagaraj/designer",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "hashAlgorithm": "SHA-256; text line endings normalized to LF",
   "packageContract": {
     "engines": {
@@ -44,9 +44,9 @@
     }
   },
   "authored": {
-    "README.md": "3df14a78e0676c4cb547af06a1204d00f636e242709878a34afe4dc1324e6422",
+    "README.md": "514e088ae9b4265bd5efa3a713a3f029975434b680402ed2f0bed67b043a9ccb",
     "SECURITY.md": "8a7f88b99a59a8ad827edb6c578c13f8eb0cf8d81bedef1ae4777327056ba8c4",
-    "SKILL.md": "5b0d6d77f144c732c758b8f9b3dc16b28b5bd5ecf7456768b6e8f3ce27eb8e71",
+    "SKILL.md": "3d748fc9f60c534a3e8e2cf5fba541dbca0bf205fea9b00dad9269a78223fd7b",
     "THIRD_PARTY_NOTICES.md": "4c162cc1a0e37a6f6a3be063be7b474cfd4f81e458e9383f4f8a17b3f9b6434f",
     "adapters/claude-code/README.md": "3c0d7626a4a1797e241436e02dd4327e04b69cd7409cb8c06591070a1bc0858b",
     "adapters/codex/README.md": "5fecabec2b978427843c45a4161d47e7a136f4bae6f6155595b12746b9b0731e",
@@ -61,7 +61,7 @@
     "benchmarks/run-benchmark.mjs": "c57b3364af38ac831258d974304f9040147f921f8a51f9be6abe7df419840516",
     "docs/DESIGN-SYSTEM.md": "971e9712d870bafaeee23407cce04934f339a68e299a5e014bbdceacba3342fd",
     "docs/INSTALL.md": "33334c6c999be187cb84ffd935ce6ea9068a98c4b33d54c083ea26fe9525d34e",
-    "docs/PARITY.md": "14d9ebd3321c556eb859ed2ccab68090bc49435b24d9ae8e1df38ec13109dd0e",
+    "docs/PARITY.md": "57a57afc6de3955b00614afef1c70955c8f7b185f9bd8e69b96474c454ee25e0",
     "docs/PROVENANCE.md": "50a847c63eb4d1aea0947a93b246650126f7ea059ad829d4ee3c786730f8b291",
     "docs/agent-support.md": "09830d2a71f812fa879d03614787521e07129aa3bbf0f8b4766f570421d61236",
     "docs/dependencies.md": "85df4cdf0ffe60fcfacd4cd84ca5253fa941f6e336dfbce44783c31450b0c27a",
@@ -76,8 +76,8 @@
     "references/design-director.md": "5b99eabf3580372c89b7b76d706e7aecd1a488585e4e146ca96acac905d5f3ee",
     "references/design-grammar.md": "71f88c3845eba314afc19d207fa7674b6806384a46cb2e6f19bebf5304da5f2b",
     "references/design-review.md": "36ef0ac20502adf462a21b4602276d80eaa0dcf3db0d17b410325532f9a75589",
-    "scripts/build-manifest.mjs": "8420be92a2d1cf0d92a995385015582fce8af5a3b04eb492ece5d1252bbc806f",
-    "scripts/build-reference-index.mjs": "149ee3bf511db8b68bba0886fd628c1af9aa07eb096dd3ad1af08bf9230dbf58",
+    "scripts/build-manifest.mjs": "7a60dfcf942afc25bde18664da69af6f7297a5a4d5c0ab2d340c466668886745",
+    "scripts/build-reference-index.mjs": "3c66d667a56d0d0deff5e2a06c00f7f192601c00ba4835fd17b6e7f6aeed6e9a",
     "scripts/design-audit.mjs": "0b0febb24e189a55d674e11e388b9235969b677df8fae104805c26b7cb5c17d3",
     "scripts/design-drift.mjs": "4253fdfac7b2481be31e5c784b43a7fb91f4bff2fba680844e566207c38281a2",
     "scripts/doctor.mjs": "f2a28e9e20d1e463a4da72845d88ab25bdfebe72f8e1b32f454318c4c3922f4a",
@@ -87,7 +87,7 @@
     "scripts/record.mjs": "377fa92d61d8c0db39b19595b911b7fd0afea802051e8810ae3a282e593a3db0",
     "scripts/setup.mjs": "1a80622c91f620a63e261ff79089d5884fc18d1b153fcfe60ab658aeb68c082c",
     "scripts/uninstall-agent.mjs": "0012a865f2fb511274a803b77b4b890ba4195d017f3507a96e1f3059127e5f6a",
-    "tests/distribution-tests.mjs": "f7ffda3fd9fc30102031fd201aa17ac51dcf9862bca956162118bc3d3ee388f9",
+    "tests/distribution-tests.mjs": "3ca308f40848a43ac9cbd430a24f38a150edc3007196091ec443d051b25381e1",
     "tests/fixtures/browser/index.html": "d2d7616aa1ee4901d96d286389f3821788e6cffb6637b15857ae87dbea2f8f60",
     "tests/fixtures/browser/tokens.css": "8660dbd8eaa417b84f8992c2c572a04c77dcfb7bb48c54ecb195064d935d7f6d",
     "tests/fixtures/drift-bad/design-drift.config.json": "72e25a29e378b753fc3347cfa0290d5a1811380c5f7ac1646a571ab6b5442fc2",
@@ -98,14 +98,14 @@
     "tests/fixtures/drift-ok/package.json": "49e89f373a959b6cf0bb6bc133e58f332e9aa4b9bcf65a0de8681d41f5c8a605",
     "tests/fixtures/drift-ok/styles/app.css": "94159d5be65245efdafd1b642e8f7296fbe08d1257a8d336d6a9b480e6962f3d",
     "tests/fixtures/drift-ok/styles/tokens.css": "7cfae851eb04dc8068c0a80d8e7eb0b9311df31f291b9919c4307e32ef74e9b9",
-    "tests/parity-tests.mjs": "3f75aaa11f80017f5f3e5acd09abb62b507f7f1985248444394113da55eed382",
-    "tests/run-tests.mjs": "8e2f9b300c8379610a503a30cd6c6e37108952666536db7565bf1754fc078f9f"
+    "tests/parity-tests.mjs": "52b5dd5e31bef29cf6331e8fed8810a35fb7605ee8fc91363d6337e063676898",
+    "tests/run-tests.mjs": "94911cdc7a959b938486d55f01ee6e603d1d7cf912701c7f7c19de5f0ca1f099"
   },
   "data": {
     "data/agents.json": "f3465ef92c687d3f9177690796bba76e73ee3bbffe41faba2b7fd0736884849c",
     "data/optional-packs.json": "e9c656e5653e224132c94fb57b683a528392c5c40dfe0f8a4bfafdead58e1d19",
     "data/frontend-design.md": "d91970639e9f5c37682ac7ab60094d35f1c7c1f38d731bd56396563aee10c1d3",
-    "data/reference-index.json": "d52f8aa12f5c6bf9659df989b31e2af579623454fc94441dff14c5ba32b59585",
+    "data/reference-index.json": "37023b544c68db6aa9e1c645083131f13c69efe37a5162445947f40c983d522c",
     "licenses/upstream/awesome-design-md/LICENSE": "6d4bdc9a9cf30e7beb593475fdcdbf29f981ea6bd7923f202866145409f87b44",
     "licenses/upstream/awesome-design-skills/LICENSE": "56e2dc0100744b958d87e5fc790f4e5ed2b5f483d6f2cbade4b6f7a0f5a03862",
     "licenses/upstream/claude-design-skills/LICENSE": "0eda00130ccadec7fd54304d10d52575f4b066937bbaed3eddee2859841f0205",

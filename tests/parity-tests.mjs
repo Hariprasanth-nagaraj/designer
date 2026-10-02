@@ -14,7 +14,7 @@ const run=(script,args=[],extra={})=>spawnSync(process.execPath,[script,...args]
 const script=name=>join(paths.scripts,name);
 let pass=0,fail=0;
 const assert=(c,m)=>{if(!c)throw new Error(m);};
-const test=async(name,fn)=>{try {await fn();pass++;console.log('  PASS '+name);}catch(e){fail++;console.log('  FAIL '+name+' — '+e.message);}};
+const test=async(name,fn)=>{try {await fn();pass++;console.log('  PASS '+name);}catch(e){fail++;console.log('  FAIL '+name+' — '+e.message);if(process.env.CI)console.error('::error title=Parity test '+name+'::'+e.message.replace(/%/g,'%25').replace(/\r/g,'%0D').replace(/\n/g,'%0A'));}};
 const install=(args=[],extra={})=>run(script('install-agent.mjs'),['--ai','pi','--mode','copy',...args],extra);
 const copy=join(home,'.pi/agent/skills/designer');
 const copyOf=(at)=>{fs.mkdirSync(at,{recursive:true});for(const item of PAYLOAD)if(fs.existsSync(join(paths.packageRoot,item)))fs.cpSync(join(paths.packageRoot,item),join(at,item),{recursive:true});};

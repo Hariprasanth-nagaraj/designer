@@ -37,6 +37,7 @@ async function test(section, name, fn) {
     fail++;
     failures.push({ name, message: e?.message ?? String(e) });
     console.log(`  ✗ ${name}\n      ${(e?.message ?? String(e)).split("\n")[0]}`);
+    if (process.env.CI) console.error("::error title=Core test " + name + "::" + String(e?.message ?? e).replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A").slice(0, 6000));
   }
 }
 const pending = [];

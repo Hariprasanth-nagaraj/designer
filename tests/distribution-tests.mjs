@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /** Real npm archive -> consumer install -> copied skill -> shared browser -> booking outcome. */
 import * as fs from "node:fs";
-import {join,dirname} from "node:path";
+import {join,dirname,resolve} from "node:path";
 import {tmpdir} from "node:os";
 import {spawn,spawnSync} from "node:child_process";
 import {createServer} from "node:http";
 import {pathToFileURL} from "node:url";
 import {paths} from "../lib/paths.mjs";
 const box=fs.mkdtempSync(join(tmpdir(),"designer-distribution-")), argv=process.argv.slice(2);
-const i=argv.indexOf("--out"), evidence=i>=0?argv[i+1]:join(box,"evidence");fs.mkdirSync(evidence,{recursive:true});
+const i=argv.indexOf("--out"), evidence=resolve(i>=0?argv[i+1]:join(box,"evidence"));fs.mkdirSync(evidence,{recursive:true});
 const home=join(box,"isolated home"), state=join(box,"personal state");fs.mkdirSync(home);
 const env={...process.env,HOME:home,USERPROFILE:home,LOCALAPPDATA:join(home,"local"),DESIGNER_STATE:state,DESIGNER_UIPM:"",DESIGNER_BAOYU:""};
 delete env.DESIGNER_ROOT;delete env.DESIGNER_PLAYWRIGHT;
@@ -92,5 +92,5 @@ try {
  const result={package:pkg.name,version:pkg.version,archiveEntries:packed.entryCount,consumerCore:true,copyCore:true,copyBrowserBootstrap:true,browserReady:doctor.browserReady,auditNegativeControl:true,flow:true,nativeClientDiscovery:"not exercised",modelGenerationComparison:"not exercised"};
  fs.writeFileSync(join(evidence,"result.json"),JSON.stringify(result,null,2));
  console.log(JSON.stringify(result,null,2));
-} catch(e) {console.error(e.message);process.exitCode=1;}
+} catch(e) {console.error(e.message);if(process.env.CI) console.error("::error title=Distribution regression::"+e.message.replace(/%/g,"%25").replace(/\r/g,"%0D").replace(/\n/g,"%0A"));process.exitCode=1;}
 finally {if(server)await new Promise(resolve=>server.close(resolve));fs.writeFileSync(join(evidence,"commands.json"),JSON.stringify(log,null,2));fs.rmSync(box,{recursive:true,force:true});}

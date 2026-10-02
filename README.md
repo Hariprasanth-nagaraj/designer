@@ -18,7 +18,7 @@ For an unreleased checkout or local tarball:
 
 ```sh
 npm install -g .
-# or npm install -g ./hariprasanth-nagaraj-designer-1.2.1.tgz
+# or npm install -g ./hariprasanth-nagaraj-designer-1.2.2.tgz
 ```
 
 `designer-install-agent --list` lists placement conventions. No arguments previews detected configuration markers; `--ai all --apply` deliberately places files for those markers. **Neither detection nor placement proves native client compatibility.** Copy is the default. `--mode link` explicitly links to the source, falling back to a copy if links are unavailable.

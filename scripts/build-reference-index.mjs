@@ -61,7 +61,7 @@ function frontmatter(text) {
 function readDesignMd(dir, id, kind, source, pathPrefix) {
   const p = join(dir, "DESIGN.md");
   if (!existsSync(p)) return null;
-  const text = readFileSync(p, "utf8");
+  const text = readFileSync(p, "utf8").replace(/\r\n/g, "\n");
   const fm = frontmatter(text) ?? {};
   const desc = fm.description ?? "";
   const summary = /\n\n([^\n]{40,240})/.exec(text)?.[1]?.replace(/\s+/g, " ").trim() ?? "";

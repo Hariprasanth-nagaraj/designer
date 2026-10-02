@@ -1,4 +1,9 @@
-# Parity closure — 1.2.1
+# Parity closure — 1.2.2
+
+The 1.2.2 release also normalizes reference source text before indexing, so CRLF/LF
+checkouts produce the same descriptions/facets. Distribution evidence paths are
+resolved absolutely, allowing the same browser test to run from CI with --out set
+to a relative directory. Failed CI controls publish diagnostic annotations.
 
 The 1.2.1 patch normalizes extensionless LICENSE files and CSV text in the integrity
 manifest. A fresh Git checkout exposed a CRLF/LF mismatch in 1.2.0; a dedicated
