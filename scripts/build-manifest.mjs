@@ -6,7 +6,7 @@ import {createHash} from "node:crypto";
 import {paths} from "../lib/paths.mjs";
 const root=paths.packageRoot, pkg=JSON.parse(readFileSync(join(root,"package.json"),"utf8"));
 const walk=(rel)=>readdirSync(join(root,rel),{withFileTypes:true}).filter(e=>e.name!==".DS_Store").sort((a,b)=>a.name.localeCompare(b.name)).flatMap(e=>e.isDirectory()?walk(rel+"/"+e.name):[rel+"/"+e.name]);
-const bytes=rel=>{const b=readFileSync(join(root,rel));return /\.(md|mjs|js|json|html|css|svg|yml|txt)$/.test(rel)?Buffer.from(b.toString("utf8").replace(/\r\n/g,"\n")):b;};
+const bytes=rel=>{const b=readFileSync(join(root,rel));return /(?:\.(md|mjs|js|json|html|css|svg|yml|txt|csv)$|(?:^|\/)LICENSE$)/.test(rel)?Buffer.from(b.toString("utf8").replace(/\r\n/g,"\n")):b;};
 const sha=rel=>createHash("sha256").update(bytes(rel)).digest("hex");
 const authoredFiles=["SKILL.md","README.md","SECURITY.md","THIRD_PARTY_NOTICES.md",...["lib","scripts","references","benchmarks","adapters","docs","tests"].flatMap(walk)].sort();
 const bundledData={};

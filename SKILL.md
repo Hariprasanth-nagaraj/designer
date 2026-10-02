@@ -12,7 +12,7 @@ description: >-
 license: MIT
 compatibility: "Node.js 20+. The core needs no browser. Browser review needs Playwright (see setup). Optional MCP servers improve interactive inspection."
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
   package: "@hariprasanth-nagaraj/designer"
 ---
 

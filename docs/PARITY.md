@@ -1,4 +1,8 @@
-# Parity closure — 1.2.0
+# Parity closure — 1.2.1
+
+The 1.2.1 patch normalizes extensionless LICENSE files and CSV text in the integrity
+manifest. A fresh Git checkout exposed a CRLF/LF mismatch in 1.2.0; a dedicated
+regression test covers both line-ending forms without relaxing verification.
 
 ## Implemented repairs
 
@@ -27,7 +31,7 @@
 ## Executed evidence
 
 - Original core suite: **24/24 passing**.
-- Lifecycle/portability regressions: **29/29 passing**.
+- Lifecycle/portability regressions: **30/30 passing**.
 - Real npm archive (369 entries), isolated consumer, independent skill copy:
   both complete core suites pass without the author's home collection.
 - Browser setup executed from that installed copy. Pinned library installed in

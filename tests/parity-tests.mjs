@@ -87,6 +87,14 @@ try {
   const target=join(home,'.cursor/skills/designer');fs.mkdirSync(target,{recursive:true});fs.writeFileSync(join(target,'SKILL.md'),'foreign');
   const r=run(script('install-agent.mjs'),['--ai','cursor']);assert(r.status===3&&fs.readFileSync(join(target,'SKILL.md'),'utf8')==='foreign','foreign changed');
  });
+ await test('integrity survives Git line-ending normalization of extensionless licenses',()=>{
+  const at=join(box,'license-normalization');copyOf(at);
+  for(const name of ['awesome-design-md','awesome-design-skills','claude-design-skills']) {
+    const file=join(at,'licenses/upstream',name,'LICENSE');const text=fs.readFileSync(file,'utf8').replace(/\r\n/g,'\n');
+    fs.writeFileSync(file,text.replace(/\n/g,'\r\n'));
+  }
+  assert(run(join(at,'scripts/build-manifest.mjs'),['--check']).status===0,'license newline regression');
+ });
  await test('setup dry-run does not rewrite even a deliberately stale index',()=>{
   const at=join(box,'dry-run-copy');copyOf(at);const index=join(at,'data/reference-index.json');const idx=JSON.parse(fs.readFileSync(index,'utf8'));idx.sentinel='keep';fs.writeFileSync(index,JSON.stringify(idx));
   const before=manifestOf(at);const r=run(join(at,'scripts/setup.mjs'),['--profile','full']);assert(r.status===0&&manifestOf(at).sha256===before.sha256,'setup mutated');

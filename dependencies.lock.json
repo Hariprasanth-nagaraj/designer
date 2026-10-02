@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "package": "@hariprasanth-nagaraj/designer",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "hashAlgorithm": "SHA-256; text line endings normalized to LF",
   "packageContract": {
     "engines": {
@@ -44,9 +44,9 @@
     }
   },
   "authored": {
-    "README.md": "2bdaab6acbbefd9a5b5b191ca9b1f6e91c1c54a764023a70d1a636af3b7835cc",
+    "README.md": "3df14a78e0676c4cb547af06a1204d00f636e242709878a34afe4dc1324e6422",
     "SECURITY.md": "8a7f88b99a59a8ad827edb6c578c13f8eb0cf8d81bedef1ae4777327056ba8c4",
-    "SKILL.md": "7e55bf5e6ef527761fb10af2b6c619009b9bcc77d748b9801d859e1355b36a4d",
+    "SKILL.md": "5b0d6d77f144c732c758b8f9b3dc16b28b5bd5ecf7456768b6e8f3ce27eb8e71",
     "THIRD_PARTY_NOTICES.md": "4c162cc1a0e37a6f6a3be063be7b474cfd4f81e458e9383f4f8a17b3f9b6434f",
     "adapters/claude-code/README.md": "3c0d7626a4a1797e241436e02dd4327e04b69cd7409cb8c06591070a1bc0858b",
     "adapters/codex/README.md": "5fecabec2b978427843c45a4161d47e7a136f4bae6f6155595b12746b9b0731e",
@@ -61,7 +61,7 @@
     "benchmarks/run-benchmark.mjs": "c57b3364af38ac831258d974304f9040147f921f8a51f9be6abe7df419840516",
     "docs/DESIGN-SYSTEM.md": "971e9712d870bafaeee23407cce04934f339a68e299a5e014bbdceacba3342fd",
     "docs/INSTALL.md": "33334c6c999be187cb84ffd935ce6ea9068a98c4b33d54c083ea26fe9525d34e",
-    "docs/PARITY.md": "3e2554bd2167e61622c46f75ba15a799ef1a09c8c311d4f2178006c7fb7ffa00",
+    "docs/PARITY.md": "14d9ebd3321c556eb859ed2ccab68090bc49435b24d9ae8e1df38ec13109dd0e",
     "docs/PROVENANCE.md": "50a847c63eb4d1aea0947a93b246650126f7ea059ad829d4ee3c786730f8b291",
     "docs/agent-support.md": "09830d2a71f812fa879d03614787521e07129aa3bbf0f8b4766f570421d61236",
     "docs/dependencies.md": "85df4cdf0ffe60fcfacd4cd84ca5253fa941f6e336dfbce44783c31450b0c27a",
@@ -76,7 +76,7 @@
     "references/design-director.md": "5b99eabf3580372c89b7b76d706e7aecd1a488585e4e146ca96acac905d5f3ee",
     "references/design-grammar.md": "71f88c3845eba314afc19d207fa7674b6806384a46cb2e6f19bebf5304da5f2b",
     "references/design-review.md": "36ef0ac20502adf462a21b4602276d80eaa0dcf3db0d17b410325532f9a75589",
-    "scripts/build-manifest.mjs": "7c75a90f2248bafc290c3d57866c4cdd7ffd39af0f2c892754fc72f7e859c17a",
+    "scripts/build-manifest.mjs": "8420be92a2d1cf0d92a995385015582fce8af5a3b04eb492ece5d1252bbc806f",
     "scripts/build-reference-index.mjs": "149ee3bf511db8b68bba0886fd628c1af9aa07eb096dd3ad1af08bf9230dbf58",
     "scripts/design-audit.mjs": "0b0febb24e189a55d674e11e388b9235969b677df8fae104805c26b7cb5c17d3",
     "scripts/design-drift.mjs": "4253fdfac7b2481be31e5c784b43a7fb91f4bff2fba680844e566207c38281a2",
@@ -98,7 +98,7 @@
     "tests/fixtures/drift-ok/package.json": "49e89f373a959b6cf0bb6bc133e58f332e9aa4b9bcf65a0de8681d41f5c8a605",
     "tests/fixtures/drift-ok/styles/app.css": "94159d5be65245efdafd1b642e8f7296fbe08d1257a8d336d6a9b480e6962f3d",
     "tests/fixtures/drift-ok/styles/tokens.css": "7cfae851eb04dc8068c0a80d8e7eb0b9311df31f291b9919c4307e32ef74e9b9",
-    "tests/parity-tests.mjs": "1b23c6ecbb26bf9e43e8b74fd4e24e0ac9ae011ced72342e48684d715d96c420",
+    "tests/parity-tests.mjs": "3f75aaa11f80017f5f3e5acd09abb62b507f7f1985248444394113da55eed382",
     "tests/run-tests.mjs": "8e2f9b300c8379610a503a30cd6c6e37108952666536db7565bf1754fc078f9f"
   },
   "data": {
@@ -106,9 +106,9 @@
     "data/optional-packs.json": "e9c656e5653e224132c94fb57b683a528392c5c40dfe0f8a4bfafdead58e1d19",
     "data/frontend-design.md": "d91970639e9f5c37682ac7ab60094d35f1c7c1f38d731bd56396563aee10c1d3",
     "data/reference-index.json": "d52f8aa12f5c6bf9659df989b31e2af579623454fc94441dff14c5ba32b59585",
-    "licenses/upstream/awesome-design-md/LICENSE": "0862a727415509d17206d78bfbfe2f6b142f2c2833283b457a6f0db972ee6ed3",
-    "licenses/upstream/awesome-design-skills/LICENSE": "ce33a0609e3e4d01c07d5291358929bd98b53e9d82b6dc6b9175cd3ec424a4f9",
-    "licenses/upstream/claude-design-skills/LICENSE": "2ad9ae0f9dee8f6ce77155529bbb911443e47aaa87df08bc7ee22eca3638a7ce",
+    "licenses/upstream/awesome-design-md/LICENSE": "6d4bdc9a9cf30e7beb593475fdcdbf29f981ea6bd7923f202866145409f87b44",
+    "licenses/upstream/awesome-design-skills/LICENSE": "56e2dc0100744b958d87e5fc790f4e5ed2b5f483d6f2cbade4b6f7a0f5a03862",
+    "licenses/upstream/claude-design-skills/LICENSE": "0eda00130ccadec7fd54304d10d52575f4b066937bbaed3eddee2859841f0205",
     "licenses/upstream/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
     "licenses/upstream/uipm-stack/LICENSE": "738f69dfa83db5c347c678fb9d90e560877059f0de93a327c39001bff92dc014",
     "licenses/upstream/uipm-stack/SOURCE.json": "b40f1bf8fdf422874272a204d40f6c00610ec45a1b853d39789f989510f127d9"
